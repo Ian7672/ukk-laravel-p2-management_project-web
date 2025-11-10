@@ -1,0 +1,459 @@
+/* Modern Futuristic UI Styles */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --neon-blue: #00d4ff;
+    --neon-purple: #b347d9;
+    --neon-green: #00ff88;
+    --neon-pink: #ff0080;
+    --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
+    --shadow-glow-purple: 0 0 20px rgba(179, 71, 217, 0.3);
+    --shadow-glow-green: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+/* login+register: disable animated background via extra class if needed; keeping default minimal */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(179, 71, 217, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+    animation: backgroundShift 20s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes backgroundShift {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Glass Morphism Cards */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    border-color: var(--neon-blue);
+}
+
+/* Modern Sidebar */
+.modern-sidebar {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--glass-border);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.modern-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 15px 20px;
+    margin: 5px 10px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.modern-sidebar .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-gradient);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.modern-sidebar .nav-link:hover::before,
+.modern-sidebar .nav-link.active::before {
+    left: 0;
+}
+
+.modern-sidebar .nav-link:hover,
+.modern-sidebar .nav-link.active {
+    color: white;
+    transform: translateX(5px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Modern Buttons */
+.btn-modern {
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 15px;
+    padding: 12px 25px;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-modern:hover::before {
+    left: 100%;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-success-modern {
+    background: var(--success-gradient);
+}
+
+.btn-warning-modern {
+    background: var(--warning-gradient);
+}
+
+.btn-danger-modern {
+    background: var(--danger-gradient);
+}
+
+/* Modern Tables */
+.modern-table {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.modern-table thead {
+    background: var(--primary-gradient);
+}
+
+.modern-table th {
+    border: none;
+    padding: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+}
+
+.modern-table td {
+    border: none;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.modern-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: scale(1.01);
+}
+
+/* Modern Forms */
+.form-modern {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid var(--glass-border);
+}
+
+.form-control-modern {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 15px 20px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.form-control-modern:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    outline: none;
+}
+
+.form-control-modern::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Modern Badges */
+.badge-modern {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid;
+}
+
+.badge-primary-modern {
+    background: var(--primary-gradient);
+    border-color: var(--neon-blue);
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.badge-success-modern {
+    background: var(--success-gradient);
+    border-color: var(--neon-green);
+    color: white;
+    box-shadow: var(--shadow-glow-green);
+}
+
+.badge-warning-modern {
+    background: var(--warning-gradient);
+    border-color: #ffd700;
+    color: white;
+}
+
+.badge-danger-modern {
+    background: var(--danger-gradient);
+    border-color: var(--neon-pink);
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+}
+
+/* Modern Alerts */
+.alert-modern {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    border-left: 4px solid;
+}
+
+.alert-success-modern {
+    border-left-color: var(--neon-green);
+    box-shadow: var(--shadow-glow-green);
+}
+
+.alert-danger-modern {
+    border-left-color: var(--neon-pink);
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+}
+
+.alert-warning-modern {
+    border-left-color: #ffd700;
+}
+
+.alert-info-modern {
+    border-left-color: var(--neon-blue);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Modern Progress Bars */
+.progress-modern {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    height: 25px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.progress-bar-modern {
+    background: var(--primary-gradient);
+    border-radius: 20px;
+    transition: width 0.8s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progressShine 2s infinite;
+}
+
+@keyframes progressShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Modern Cards */
+.card-modern {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.card-modern:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: var(--neon-blue);
+}
+
+.card-header-modern {
+    background: var(--primary-gradient);
+    border: none;
+    padding: 20px;
+    color: white;
+    font-weight: 600;
+}
+
+.card-body-modern {
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Floating comment button */
+.floating-comment-btn {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1050;
+}
+
+/* Floating Elements */
+.floating { /* disabled globally on dashboards by removing usage */ }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Glow Effects */
+.glow-blue {
+    box-shadow: var(--shadow-glow);
+}
+
+.glow-purple {
+    box-shadow: var(--shadow-glow-purple);
+}
+
+.glow-green {
+    box-shadow: var(--shadow-glow-green);
+}
+
+/* Modern Navbar */
+.navbar-modern {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modern-sidebar {
+        width: 100%;
+        height: auto;
+    }
+    
+    .glass-card {
+        margin: 10px;
+    }
+    
+    .btn-modern {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+/* Loading Animation */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--neon-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Text Effects */
+.text-glow {
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-gradient);
+}
