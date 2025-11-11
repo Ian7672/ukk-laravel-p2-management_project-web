@@ -304,7 +304,7 @@
     position: relative;
     margin-top: auto !important;
     width: 100%;
-    padding: 0 1.25rem calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    padding: 0 1.25rem calc(env(safe-area-inset-bottom, 0px) + 3.5rem);
     display: flex;
     justify-content: center;
 }
@@ -397,7 +397,7 @@
 
     .acrylic-sidebar-fixed .sidebar-footer {
         margin-top: auto !important;
-        padding: 0 1rem calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+        padding: 0 1rem calc(env(safe-area-inset-bottom, 0px) + 3rem);
         display: flex;
         justify-content: center;
     }
