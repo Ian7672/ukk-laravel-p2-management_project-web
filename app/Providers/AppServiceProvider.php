@@ -4,8 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
-
-
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,20 +19,23 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    // App\Providers\AppServiceProvider.php
-    public function boot()
+    public function boot(): void
     {
-      view()->composer('*', function ($view) {
-        if(request()->route('project')){
-            $view->with('project', request()->route('project'));
+        // Share parameter 'project' ke semua view (jika ada)
+        View::composer('*', function ($view) {
+            $project = request()->route('project'); // aman, akan null jika tak ada route
+            if ($project !== null) {
+                $view->with('project', $project);
+            }
+        });
+
+        // Paksa URL & skema HTTPS saat production (Railway)
+        if (app()->environment('production')) {
+            // Pastikan APP_URL sudah https://domain-kamu
+            if (config('app.url')) {
+                URL::forceRootUrl(config('app.url'));
+            }
+            URL::forceScheme('https');
         }
-    });
-
- 
-    if (app()->environment('production')) {
-        URL::forceScheme('https');
     }
-
-}
-
 }
