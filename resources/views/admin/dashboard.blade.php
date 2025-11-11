@@ -64,7 +64,7 @@
         backdrop-filter: blur(20px) saturate(180%);
         border-right: 1px solid rgba(255, 255, 255, 0.1);
         box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+        z-index: 1400;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 1.5rem;
@@ -827,12 +827,12 @@
   }
 
   .acrylic-sidebar-fixed {
-    top: var(--dashboard-topbar-height, 72px);
-    height: calc(100vh - var(--dashboard-topbar-height, 72px));
+    top: 0;
+    height: 100vh;
   }
 
   .sidebar-backdrop {
-    top: var(--dashboard-topbar-height, 72px);
+    top: 0;
   }
 
   .project-item-6,

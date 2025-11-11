@@ -113,7 +113,7 @@
     backdrop-filter: blur(20px) saturate(180%);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    z-index: 1400;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1.5rem;
@@ -363,7 +363,7 @@
     inset: 0;
     background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(4px);
-    z-index: 900;
+    z-index: 1300;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;

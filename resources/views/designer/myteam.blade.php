@@ -159,6 +159,11 @@
             font-size: 0.875rem;
             backdrop-filter: blur(10px);
             border: 1px solid;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .badge-success {
