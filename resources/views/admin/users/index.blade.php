@@ -735,6 +735,9 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
                 width: 100%;
                 justify-content: space-between;
             }
+            .acrylic-sidebar-fixed {
+                width: min(85vw, 320px);
+            }
         }
 
         .users-shell {
