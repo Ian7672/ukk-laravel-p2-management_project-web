@@ -732,8 +732,9 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
                 gap: 1rem;
             }
             .mobile-nav-wrapper {
-                width: 100%;
-                justify-content: space-between;
+                width: auto;
+                justify-content: flex-start;
+                gap: 0.75rem;
             }
             .acrylic-sidebar-fixed {
                 width: min(78vw, 260px);
@@ -1265,8 +1266,9 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
                 min-width: 140px;
             }
             .mobile-nav-wrapper {
-                width: 100%;
-                justify-content: space-between;
+                width: auto;
+                justify-content: flex-start;
+                gap: 0.75rem;
             }
         }
 

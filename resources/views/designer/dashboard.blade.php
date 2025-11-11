@@ -1641,8 +1641,9 @@
       }
 
       .mobile-nav-wrapper {
-        width: 100%;
-        justify-content: space-between;
+        width: auto;
+        justify-content: flex-start;
+        gap: 0.75rem;
       }
 
       .glass-card,
