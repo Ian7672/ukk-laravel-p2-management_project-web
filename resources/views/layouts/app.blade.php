@@ -258,7 +258,7 @@
             }
 
             .acrylic-sidebar-fixed {
-                width: min(85vw, 320px);
+                width: min(78vw, 260px);
             }
         }
 

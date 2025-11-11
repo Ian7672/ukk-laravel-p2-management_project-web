@@ -378,7 +378,7 @@
     .acrylic-sidebar-fixed {
         transform: translateX(-100%);
         transition: transform 0.3s ease;
-        width: min(85vw, 320px);
+        width: min(78vw, 260px);
     }
 
     body.sidebar-open .acrylic-sidebar-fixed {

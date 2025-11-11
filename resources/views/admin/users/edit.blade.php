@@ -177,7 +177,7 @@
         @media (max-width: 992px) {
             .acrylic-sidebar-fixed {
                 position: relative;
-                width: min(85vw, 320px);
+                width: min(78vw, 260px);
                 height: auto;
                 box-shadow: none;
             }
