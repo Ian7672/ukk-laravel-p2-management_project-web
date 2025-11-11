@@ -564,7 +564,7 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
             backdrop-filter: blur(20px) saturate(180%);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1400;
             overflow-y: auto;
             overflow-x: hidden;
             padding: 1.5rem;
@@ -976,6 +976,32 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
 
             .user-card-footer .status-pill {
                 align-self: auto;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .users-shell,
+            .users-shell .filters-row .form-control,
+            .users-shell .filters-row .form-select,
+            .users-shell .search-form .form-control,
+            .user-card,
+            .empty-state,
+            .role-badge,
+            .badge,
+            .btn-primary,
+            .btn-outline-primary,
+            .btn-outline-danger,
+            .btn-info,
+            .btn-group .btn,
+            .status-pill,
+            .modal-content,
+            .add-user-sheet .add-user-sheet__overlay,
+            .add-user-sheet .add-user-sheet__content {
+                backdrop-filter: none !important;
+            }
+
+            .user-card::before {
+                display: none;
             }
         }
 
