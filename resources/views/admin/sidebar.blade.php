@@ -84,7 +84,7 @@
         </li>
     </ul>
 
-    <div class="sidebar-footer mt-4 pt-2">
+    <div class="sidebar-footer pt-2">
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn-logout-acrylic w-100">
@@ -300,23 +300,24 @@
     border: 1px solid rgba(139, 92, 246, 0.5);
 }
 
-.sidebar-footer {
+.acrylic-sidebar-fixed .sidebar-footer {
     position: relative;
-    margin-top: 2.5rem;
-    padding-bottom: 1.25rem;
+    margin-top: auto !important;
+    width: 100%;
+    padding: 0 1.25rem calc(env(safe-area-inset-bottom, 0px) + 1rem);
     display: flex;
     justify-content: center;
 }
 
-.sidebar-footer form {
+.acrylic-sidebar-fixed .sidebar-footer form {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.sidebar-footer .btn-logout-acrylic {
+.acrylic-sidebar-fixed .sidebar-footer .btn-logout-acrylic {
     width: 100%;
-    max-width: 220px;
+    max-width: none;
 }
 
 .btn-logout-acrylic {
@@ -394,14 +395,14 @@
         visibility: visible;
     }
 
-    .sidebar-footer {
-        margin-top: 2rem;
-        padding-bottom: 1rem;
+    .acrylic-sidebar-fixed .sidebar-footer {
+        margin-top: auto !important;
+        padding: 0 1rem calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
         display: flex;
         justify-content: center;
     }
 
-    .sidebar-footer form {
+    .acrylic-sidebar-fixed .sidebar-footer form {
         justify-content: center;
     }
 

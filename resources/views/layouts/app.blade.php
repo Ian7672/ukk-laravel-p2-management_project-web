@@ -70,6 +70,14 @@
             box-shadow: 0 10px 30px rgba(139, 92, 246, 0.25);
         }
 
+        @media (max-width: 575.98px) {
+            .sidebar-toggle-btn {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+            }
+        }
+
         /* Topbar */
         .navbar-acrylic {
             background: rgba(17, 24, 39, 0.8);

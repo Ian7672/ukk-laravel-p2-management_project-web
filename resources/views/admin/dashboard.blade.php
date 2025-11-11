@@ -207,21 +207,6 @@
         border: 1px solid rgba(139, 92, 246, 0.5);
       }
 
-      .sidebar-footer {
-        position: absolute;
-        bottom: 1.5rem;
-        left: 1.5rem;
-        right: 1.5rem;
-        display: flex;
-        justify-content: center;
-      }
-
-      .sidebar-footer form {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-      }
-
       .btn-logout-acrylic {
         background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
         border: 1px solid rgba(239, 68, 68, 0.3);

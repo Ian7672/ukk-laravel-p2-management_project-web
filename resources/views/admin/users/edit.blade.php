@@ -138,10 +138,11 @@
         }
 
         .sidebar-footer {
-            position: absolute;
-            bottom: 1.5rem;
-            left: 1.5rem;
-            right: 1.5rem;
+            position: relative;
+            margin-top: auto;
+            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+            display: flex;
+            justify-content: center;
         }
 
         .btn-logout-acrylic {
