@@ -256,6 +256,10 @@
             .content-wrapper {
                 padding: 1.75rem 1rem 4rem;
             }
+
+            .acrylic-sidebar-fixed {
+                width: min(85vw, 320px);
+            }
         }
 
         @media (max-width: 767.98px) {
