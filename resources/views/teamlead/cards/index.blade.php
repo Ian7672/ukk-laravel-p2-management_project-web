@@ -832,8 +832,7 @@
 </div>
 
 
-
-
+@include('partials.profile-quick-sheet')
 @include('components.comment-bottom-sheet')
 
 </body>

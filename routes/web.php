@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function () {
         // Dashboard & Projects
         Route::get('/dashboard', [ProjectController::class, 'teamLeadDashboard'])->name('dashboard');
         Route::get('/projects/{project}', [ProjectController::class, 'teamLeadShow'])->name('projects.show');
+        Route::post('/projects/{project}/complete', [ProjectController::class, 'complete'])->name('projects.complete');
         Route::get('/myteam', [ProjectMemberController::class, 'myTeam'])->name('myteam');
         
         // Cards Management

@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             CardsTableSeeder::class,
             CardAssignmentsTableSeeder::class,
             SubtasksTableSeeder::class,
+            CommentsTableSeeder::class,
             TimeLogsTableSeeder::class,
         ]);
     }

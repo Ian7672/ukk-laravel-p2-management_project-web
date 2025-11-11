@@ -73,6 +73,7 @@ class ProjectController extends Controller
         'project_name' => $request->project_name,
         'description'  => $request->description,
         'deadline'     => $request->deadline,
+        'status'       => 'proses',
         'created_by'   => auth()->id(),
     ]);
 
@@ -88,7 +89,7 @@ class ProjectController extends Controller
     \App\Models\ProjectMember::create([
         'project_id' => $project->project_id,
         'user_id'    => $teamLead->user_id,
-        'role'       => 'team_lead',
+        'role'       => 'admin',
         'joined_at'  => now(),
     ]);
 
@@ -160,10 +161,17 @@ class ProjectController extends Controller
             ->whereHas('members', function ($q) use ($userId) {
                 $q->where('user_id', $userId);
             })
-            ->with('boards.cards', 'members.user')
+            ->with([
+                'boards.cards.subtasks',
+                'boards.cards.assignments.user',
+                'members.user',
+            ])
             ->firstOrFail();
 
-        return view('teamlead.projects.show', compact('project'));
+        $progressSummary = $this->calculateProjectProgress($project);
+        $canComplete = $project->status !== 'selesai' && ($progressSummary['percent'] ?? 0) >= 100;
+
+        return view('teamlead.projects.show', compact('project', 'progressSummary', 'canComplete'));
     }
 
     /**
@@ -216,6 +224,41 @@ class ProjectController extends Controller
     return view('designer.dashboard', compact('cards'));
 }
 
+    public function complete(Project $project)
+    {
+        $user = auth()->user();
+        if ($user->role !== 'team_lead') {
+            abort(403, 'Hanya Team Lead yang dapat menyelesaikan proyek');
+        }
+
+        $project = Project::where('project_id', $project->project_id)
+            ->whereHas('members', function ($q) use ($user) {
+                $q->where('user_id', $user->user_id);
+            })
+            ->with(['boards.cards.subtasks', 'members.user'])
+            ->firstOrFail();
+
+        if ($project->status === 'selesai') {
+            return back()->with('info', 'Proyek ini sudah ditandai selesai.');
+        }
+
+        $progressSummary = $this->calculateProjectProgress($project);
+
+        if (($progressSummary['percent'] ?? 0) < 100) {
+            return back()->with('error', 'Proyek belum mencapai 100% progress.');
+        }
+
+        $project->update(['status' => 'selesai']);
+
+        $project->members->each(function ($member) {
+            if ($member->user && in_array($member->user->role, ['team_lead', 'developer', 'designer'])) {
+                $member->user->update(['current_task_status' => 'idle']);
+            }
+        });
+
+        return back()->with('success', 'Proyek berhasil ditandai selesai.');
+    }
+
 /**
  * Review semua card di board Review (khusus Team Lead)
  */
@@ -258,4 +301,37 @@ public function reject($card_id)
     return redirect()->back()->with('error', 'Card dikembalikan ke In Progress.');
 }
 
+    protected function calculateProjectProgress(Project $project): array
+    {
+        $project->loadMissing('boards.cards.subtasks');
+
+        $cards = $project->boards->flatMap->cards;
+        $subtasks = $cards->flatMap->subtasks;
+
+        $cardsTotal = $cards->count();
+        $cardsDone = $cards->filter(fn ($card) => strtolower($card->status ?? '') === 'done')->count();
+
+        $subtasksTotal = $subtasks->count();
+        $subtasksDone = $subtasks->filter(fn ($subtask) => strtolower($subtask->status ?? '') === 'done')->count();
+
+        if ($subtasksTotal > 0) {
+            $percent = round(($subtasksDone / $subtasksTotal) * 100);
+            $basis = 'subtasks';
+        } elseif ($cardsTotal > 0) {
+            $percent = round(($cardsDone / $cardsTotal) * 100);
+            $basis = 'cards';
+        } else {
+            $percent = 0;
+            $basis = 'cards';
+        }
+
+        return [
+            'percent' => $percent,
+            'basis' => $basis,
+            'cards_total' => $cardsTotal,
+            'cards_done' => $cardsDone,
+            'subtasks_total' => $subtasksTotal,
+            'subtasks_done' => $subtasksDone,
+        ];
+    }
 }

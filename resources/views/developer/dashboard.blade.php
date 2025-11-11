@@ -141,6 +141,171 @@
       justify-content: flex-end;
     }
 
+    .filter-trigger-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(17, 24, 39, 0.45);
+      color: #e5e7eb;
+      padding: 0.35rem 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .filter-trigger-btn:hover,
+    .filter-trigger-btn:focus-visible {
+      border-color: rgba(129, 140, 248, 0.75);
+      color: #ffffff;
+      background: rgba(79, 70, 229, 0.35);
+      box-shadow: 0 12px 24px rgba(79, 70, 229, 0.35);
+    }
+
+    [data-theme="light"] .filter-trigger-btn {
+      background: #e2e8f0;
+      border-color: #cbd5f5;
+      color: #1f2937;
+    }
+
+    [data-theme="light"] .filter-trigger-btn:hover,
+    [data-theme="light"] .filter-trigger-btn:focus-visible {
+      background: #c7d2fe;
+      color: #1d4ed8;
+      border-color: #a5b4fc;
+    }
+
+    .status-filter-sheet {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      align-items: flex-end;
+      justify-items: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 1500;
+    }
+
+    .status-filter-sheet.hidden {
+      display: none;
+    }
+
+    .status-filter-sheet.status-filter-sheet--active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .status-filter-sheet__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(10px);
+    }
+
+    .status-filter-sheet__panel {
+      position: relative;
+      width: min(420px, 100% - 1.5rem);
+      background: rgba(17, 24, 39, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px 28px 0 0;
+      padding: 1.5rem;
+      transform: translateY(24px);
+      transition: transform 0.25s ease;
+    }
+
+    .status-filter-sheet.status-filter-sheet--active .status-filter-sheet__panel {
+      transform: translateY(0);
+    }
+
+    .status-filter-sheet__handle {
+      width: 48px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.45);
+      margin: 0 auto 1rem;
+    }
+
+    .status-filter-sheet__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .status-filter-sheet__close {
+      border: none;
+      background: rgba(148, 163, 184, 0.18);
+      color: rgba(248, 250, 252, 0.9);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .status-filter-sheet__close:hover {
+      background: rgba(99, 102, 241, 0.35);
+      color: #ffffff;
+    }
+
+    .status-filter-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .status-filter-option {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(30, 41, 59, 0.65);
+      color: #e2e8f0;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .status-filter-option.active {
+      border-color: rgba(79, 70, 229, 0.9);
+      background: rgba(79, 70, 229, 0.25);
+      color: #ffffff;
+      box-shadow: 0 12px 26px rgba(79, 70, 229, 0.35);
+    }
+
+    [data-theme="light"] .status-filter-sheet__overlay {
+      background: rgba(15, 23, 42, 0.35);
+    }
+
+    [data-theme="light"] .status-filter-sheet__panel {
+      background: #ffffff;
+      border-color: rgba(148, 163, 184, 0.25);
+      color: #0f172a;
+      box-shadow: 0 -24px 50px rgba(15, 23, 42, 0.1);
+    }
+
+    [data-theme="light"] .status-filter-option {
+      background: #f1f5f9;
+      border-color: #cbd5f5;
+      color: #1f2937;
+    }
+
+    [data-theme="light"] .status-filter-option.active {
+      background: #c7d2fe;
+      border-color: #818cf8;
+      color: #111827;
+    }
+
+    body.status-filter-sheet-open {
+      overflow: hidden;
+    }
+
     .dashboard-actions .btn-modern {
       display: inline-flex;
       align-items: center;
@@ -205,6 +370,16 @@
       gap: 1.25rem;
       position: relative;
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+    }
+
+    .task-card--project-finished {
+      border-color: rgba(34, 197, 94, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.2);
+    }
+
+    .project-finished-note {
+      font-size: 0.85rem;
+      color: #facc15;
     }
 
     .task-toolbar {
@@ -1161,6 +1336,14 @@
       color: #1f2937;
     }
 
+    [data-theme="light"] .task-card--project-finished {
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    [data-theme="light"] .project-finished-note {
+      color: #b45309;
+    }
+
     [data-theme="light"] .task-card:hover {
       box-shadow: 0 24px 50px rgba(148, 163, 184, 0.25);
     }
@@ -1615,6 +1798,42 @@
                    id="taskSearchInput"
                    placeholder="Search tasks or subtasks...">
           </div>
+          <button type="button" class="filter-trigger-btn" id="statusFilterTrigger">
+            <i class="bi bi-funnel"></i>
+            <span id="statusFilterLabel">Filter: All</span>
+          </button>
+        </div>
+        <div id="developerStatusFilterSheet" class="status-filter-sheet hidden" aria-hidden="true">
+          <div class="status-filter-sheet__overlay" data-status-filter-dismiss></div>
+          <div class="status-filter-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="developerStatusFilterTitle">
+            <div class="status-filter-sheet__handle"></div>
+            <div class="status-filter-sheet__header">
+              <div>
+                <p class="text-surface-muted mb-1" id="developerStatusFilterSubtitle">Tampilkan berdasarkan status card</p>
+                <h5 class="mb-0" id="developerStatusFilterTitle">Filter Status</h5>
+              </div>
+              <button type="button" class="status-filter-sheet__close" data-status-filter-dismiss aria-label="Tutup filter">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <div class="status-filter-options">
+              <button type="button" class="status-filter-option active" data-status-option="all">
+                <i class="bi bi-app-indicator"></i> All
+              </button>
+              <button type="button" class="status-filter-option" data-status-option="todo">
+                <i class="bi bi-list-task"></i> To Do
+              </button>
+              <button type="button" class="status-filter-option" data-status-option="in_progress">
+                <i class="bi bi-lightning-charge"></i> In Progress
+              </button>
+              <button type="button" class="status-filter-option" data-status-option="review">
+                <i class="bi bi-eye"></i> Review
+              </button>
+              <button type="button" class="status-filter-option" data-status-option="done">
+                <i class="bi bi-check2-circle"></i> Done
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -1644,12 +1863,20 @@
       @else
         
           <div class="task-card-grid" id="cardsContainer">
-            @foreach($cards as $card)
-            <div class="task-card"
-                 data-project="{{ strtolower($card->board->project->project_name ?? '') }}"
-                 data-card-status="{{ $card->status }}"
-                 data-board="{{ strtolower($card->board->board_name ?? '') }}"
-                 data-card-title="{{ strtolower($card->card_title ?? '') }}">
+          @foreach($cards as $card)
+          @php
+            $projectStatus = strtolower($card->board->project->status ?? 'proses');
+            $projectFinished = $projectStatus === 'selesai';
+            $subtasks = $card->subtasks ?? collect();
+            $totalSubtasks = $subtasks->count();
+            $completedSubtasks = $subtasks->where('status', 'done')->count();
+          @endphp
+          <div class="task-card {{ $projectFinished ? 'task-card--project-finished' : '' }}"
+               data-project="{{ strtolower($card->board->project->project_name ?? '') }}"
+               data-project-status="{{ $projectStatus }}"
+               data-card-status="{{ strtolower($card->status ?? 'todo') }}"
+               data-board="{{ strtolower($card->board->board_name ?? '') }}"
+               data-card-title="{{ strtolower($card->card_title ?? '') }}">
               <div>
                 <div class="task-card-header">
                   <div>
@@ -1670,8 +1897,8 @@
                 </div>
                 <div class="task-card-meta">
                   <div class="task-card-meta-item">
-                    <span class="task-card-meta-label">Board</span>
-                    <span class="task-card-meta-value">{{ $card->board->board_name }}</span>
+                    <span class="task-card-meta-label">Progress</span>
+                    <span class="task-card-meta-value">{{ $completedSubtasks }}/{{ $totalSubtasks }}</span>
                   </div>
                   <div class="task-card-meta-item">
                     <span class="task-card-meta-label">Priority</span>
@@ -1699,35 +1926,30 @@
               <hr class="task-card-divider">
 
               <div class="task-card-actions">
-                <button class="toggle-comment-btn"
-                        data-comment-sheet-trigger="true"
-                        data-comment-type="card"
-                        data-comment-id="{{ $card->card_id }}"
-                        data-comment-title="{{ $card->card_title }}"
-                        data-comment-subtitle="{{ $card->board->project->project_name }} - {{ $card->board->board_name }}">
-                  💬 Comments
-                </button>
-                <button class="btn-modern btn-sm"
-                        data-subtask-sheet-trigger="true"
-                        data-subtask-url="{{ route('subtasks.store', $card->card_id) }}"
-                        data-subtask-heading="Tambah Dev Subtask"
-                        data-subtask-subtitle="{{ $card->board->project->project_name }} • {{ $card->card_title }}"
-                        data-subtask-title-label="Judul Dev Subtask"
-                        data-subtask-title-placeholder="Masukkan judul dev subtask"
-                        data-subtask-estimate-label="Estimasi Waktu (Jam)"
-                        data-subtask-estimate-placeholder="Contoh: 2.5"
-                        data-subtask-description-label="Deskripsi Dev"
-                        data-subtask-description-placeholder="Tuliskan deskripsi dev subtask (opsional)"
-                        data-subtask-submit-label="Simpan Dev Subtask"
-                        data-subtask-loading-label="Menyimpan...">
-                  <i class="bi bi-plus-circle me-1"></i> Add Subtask
-                </button>
+                @if(!$projectFinished)
+                  <button class="btn-modern btn-sm"
+                          data-subtask-sheet-trigger="true"
+                          data-subtask-url="{{ route('subtasks.store', $card->card_id) }}"
+                          data-subtask-heading="Tambah Dev Subtask"
+                          data-subtask-subtitle="{{ $card->board->project->project_name }} - {{ $card->card_title }}"
+                          data-subtask-title-label="Judul Dev Subtask"
+                          data-subtask-title-placeholder="Masukkan judul dev subtask"
+                          data-subtask-estimate-label="Estimasi Waktu (Jam)"
+                          data-subtask-estimate-placeholder="Contoh: 2.5"
+                          data-subtask-description-label="Deskripsi Dev"
+                          data-subtask-description-placeholder="Tuliskan deskripsi dev subtask (opsional)"
+                          data-subtask-submit-label="Simpan Dev Subtask"
+                          data-subtask-loading-label="Menyimpan...">
+                    <i class="bi bi-plus-circle me-1"></i> Add Subtask
+                  </button>
+                @endif
               </div>
 
-              <!-- Comment Section untuk Card -->
-              <div class="comment-section hidden" id="commentSection{{ $card->card_id }}">
-                {{-- Comment section handled via bottom sheet --}}
-              </div>
+              @if($projectFinished)
+                <div class="project-finished-note mt-2">
+                  <i class="bi bi-lock-fill me-1"></i>Proyek selesai. Penambahan subtask dan aksi pengerjaan dinonaktifkan.
+                </div>
+              @endif
 
               <!-- Subtasks Content (Default View) -->
               <div class="subtask-content" id="subtaskContent{{ $card->card_id }}">
@@ -1758,34 +1980,36 @@
                       @php
                         $activeSolver = $st->blockers->first();
                       @endphp
-                      @if($st->status == 'todo')
-                        <form id="startSubtaskForm{{ $st->subtask_id }}" action="{{ route('subtasks.start', $st->subtask_id) }}" method="POST" class="d-none">
-                          @csrf
-                        </form>
-                        <button class="btn-modern btn-sm"
-                                data-action-sheet-trigger="true"
-                                data-action-form="#startSubtaskForm{{ $st->subtask_id }}"
-                                data-action-title="Mulai Subtask"
-                                data-action-subtitle="{{ $st->subtask_title }}"
-                                data-action-message="Mulai mengerjakan subtask &quot;{{ $st->subtask_title }}&quot; sekarang?"
-                                data-action-confirm-label="Mulai"
-                                data-action-loading-label="Memproses...">
-                          🚀 Start
-                        </button>
-                      @elseif($st->status == 'in_progress')
-                        <form id="completeSubtaskForm{{ $st->subtask_id }}" action="{{ route('subtasks.complete', $st->subtask_id) }}" method="POST" class="d-none">
-                          @csrf
-                        </form>
-                        <button class="btn-modern btn-sm"
-                                data-action-sheet-trigger="true"
-                                data-action-form="#completeSubtaskForm{{ $st->subtask_id }}"
-                                data-action-title="Selesaikan Subtask"
-                                data-action-subtitle="{{ $st->subtask_title }}"
-                                data-action-message="Kirim subtask &quot;{{ $st->subtask_title }}&quot; untuk direview Team Lead?"
-                                data-action-confirm-label="Selesaikan"
-                                data-action-loading-label="Mengirim...">
-                          ✅ Complete
-                        </button>
+                      @if(!$projectFinished)
+                        @if($st->status == 'todo')
+                          <form id="startSubtaskForm{{ $st->subtask_id }}" action="{{ route('subtasks.start', $st->subtask_id) }}" method="POST" class="d-none">
+                            @csrf
+                          </form>
+                          <button class="btn-modern btn-sm"
+                                  data-action-sheet-trigger="true"
+                                  data-action-form="#startSubtaskForm{{ $st->subtask_id }}"
+                                  data-action-title="Mulai Subtask"
+                                  data-action-subtitle="{{ $st->subtask_title }}"
+                                  data-action-message="Mulai mengerjakan subtask &quot;{{ $st->subtask_title }}&quot; sekarang?"
+                                  data-action-confirm-label="Mulai"
+                                  data-action-loading-label="Memproses...">
+                            Mulai
+                          </button>
+                        @elseif($st->status == 'in_progress')
+                          <form id="completeSubtaskForm{{ $st->subtask_id }}" action="{{ route('subtasks.complete', $st->subtask_id) }}" method="POST" class="d-none">
+                            @csrf
+                          </form>
+                          <button class="btn-modern btn-sm"
+                                  data-action-sheet-trigger="true"
+                                  data-action-form="#completeSubtaskForm{{ $st->subtask_id }}"
+                                  data-action-title="Selesaikan Subtask"
+                                  data-action-subtitle="{{ $st->subtask_title }}"
+                                  data-action-message="Kirim subtask &quot;{{ $st->subtask_title }}&quot; untuk direview Team Lead?"
+                                  data-action-confirm-label="Selesaikan"
+                                  data-action-loading-label="Mengirim...">
+                            Selesaikan
+                          </button>
+                        @endif
                       @endif
                       <button class="toggle-comment-btn btn-sm"
                               data-comment-sheet-trigger="true"
@@ -1793,26 +2017,34 @@
                               data-comment-id="{{ $st->subtask_id }}"
                               data-comment-title="{{ $st->subtask_title }}"
                               data-comment-subtitle="{{ $card->card_title }} - {{ $card->board->project->project_name }}">
-                        💬 Comments
+                        <i class="bi bi-chat-dots me-1"></i>Comments
                       </button>
-                      @if(!$activeSolver && $st->status !== 'done')
-                        <button class="btn-modern btn-sm btn-solver"
-                                data-action-sheet-trigger="true"
-                                data-action-url="{{ route('blocker.subtask.store', $st->subtask_id) }}"
-                                data-action-method="POST"
-                                data-action-title="Kirim Solver"
-                                data-action-subtitle="{{ $st->subtask_title }}"
-                                data-action-message="Kirim permintaan bantuan kepada Team Lead untuk subtask &quot;{{ $st->subtask_title }}&quot;?"
-                                data-action-confirm-label="Kirim Solver"
-                                data-action-loading-label="Mengirim..."
-                                data-action-success="reload"
-                                data-action-payload='@json(["priority" => "medium"])'>
-                          🛠️ Solver
-                        </button>
+                      @if(!$projectFinished)
+                        @if(!$activeSolver && $st->status !== 'done')
+                          <button class="btn-modern btn-sm btn-solver"
+                                  data-action-sheet-trigger="true"
+                                  data-action-url="{{ route('blocker.subtask.store', $st->subtask_id) }}"
+                                  data-action-method="POST"
+                                  data-action-title="Kirim Solver"
+                                  data-action-subtitle="{{ $st->subtask_title }}"
+                                  data-action-message="Kirim permintaan bantuan kepada Team Lead untuk subtask &quot;{{ $st->subtask_title }}&quot;?"
+                                  data-action-confirm-label="Kirim Solver"
+                                  data-action-loading-label="Mengirim..."
+                                  data-action-success="reload"
+                                  data-action-payload='@json(["priority" => "medium"])'>
+                            Solver
+                          </button>
+                        @elseif($activeSolver)
+                          <span class="badge-modern badge-warning">
+                            Solver {{ $activeSolver->status === 'in_progress' ? 'sedang diproses' : 'menunggu' }}
+                          </span>
+                        @endif
                       @elseif($activeSolver)
                         <span class="badge-modern badge-warning">
                           Solver {{ $activeSolver->status === 'in_progress' ? 'sedang diproses' : 'menunggu' }}
                         </span>
+                      @elseif($st->status !== 'done')
+                        <span class="badge-modern badge-success">Tindakan terkunci</span>
                       @endif
                     </div>
                   </div>
@@ -1845,40 +2077,49 @@
 @include('components.subtask-bottom-sheet')
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@include('partials.profile-quick-sheet')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const taskSearchInput = document.getElementById('taskSearchInput');
   const taskSearchEmpty = document.getElementById('developerTaskSearchEmpty');
+  const statusFilterButton = document.getElementById('statusFilterTrigger');
+  const statusFilterLabel = document.getElementById('statusFilterLabel');
+  const statusFilterSheet = document.getElementById('developerStatusFilterSheet');
+  const statusFilterOptions = statusFilterSheet ? statusFilterSheet.querySelectorAll('[data-status-option]') : [];
+  const statusFilterDismiss = statusFilterSheet ? statusFilterSheet.querySelectorAll('[data-status-filter-dismiss]') : [];
+  const cards = Array.from(document.querySelectorAll('.task-card'));
+  let currentStatusFilter = 'all';
 
-  const applySearch = (query) => {
-    const term = (query || '').toLowerCase();
-    const cards = Array.from(document.querySelectorAll('.task-card'));
+  if (statusFilterSheet && statusFilterSheet.parentElement !== document.body) {
+    document.body.appendChild(statusFilterSheet);
+  }
 
-    cards.forEach(card => {
-      card.classList.remove('row-hidden');
+  const matchesSearchTerm = (card, term) => {
+    if (!term) return true;
+    const dataMatches = ['project', 'board', 'cardTitle'].some(key => {
+      return (card.dataset[key] || '').includes(term);
     });
 
-    if (!term) {
-      if (taskSearchEmpty) {
-        taskSearchEmpty.classList.add('d-none');
-      }
-      return;
-    }
+    const subtaskMatch = Array.from(card.querySelectorAll('[data-subtask-title]')).some(subtask => {
+      return (subtask.dataset.subtaskTitle || '').includes(term);
+    });
 
+    const cardText = card.textContent.toLowerCase();
+    return dataMatches || subtaskMatch || cardText.indexOf(term) !== -1;
+  };
+
+  const applyFilters = () => {
+    const term = (taskSearchInput?.value || '').toLowerCase();
     let visibleCount = 0;
+
     cards.forEach(card => {
-      const dataMatches = ['project', 'board', 'cardTitle'].some(key => {
-        return (card.dataset[key] || '').includes(term);
-      });
+      const status = (card.dataset.cardStatus || '').toLowerCase();
+      const matchesStatus = currentStatusFilter === 'all' || status === currentStatusFilter;
+      const matchesSearch = matchesSearchTerm(card, term);
+      const shouldShow = matchesStatus && matchesSearch;
 
-      const subtaskMatch = Array.from(card.querySelectorAll('[data-subtask-title]')).some(subtask => {
-        return (subtask.dataset.subtaskTitle || '').includes(term);
-      });
-
-      const cardText = card.textContent.toLowerCase();
-      const match = dataMatches || subtaskMatch || cardText.indexOf(term) !== -1;
-      card.classList.toggle('row-hidden', !match);
-      if (match) {
+      card.classList.toggle('row-hidden', !shouldShow);
+      if (shouldShow) {
         visibleCount++;
       }
     });
@@ -1888,14 +2129,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const openStatusSheet = () => {
+    if (!statusFilterSheet) return;
+    statusFilterSheet.classList.remove('hidden');
+    requestAnimationFrame(() => statusFilterSheet.classList.add('status-filter-sheet--active'));
+    document.body.classList.add('status-filter-sheet-open');
+  };
+
+  const closeStatusSheet = () => {
+    if (!statusFilterSheet) return;
+    statusFilterSheet.classList.remove('status-filter-sheet--active');
+    document.body.classList.remove('status-filter-sheet-open');
+    setTimeout(() => statusFilterSheet.classList.add('hidden'), 220);
+  };
+
   if (taskSearchInput) {
-    taskSearchInput.addEventListener('input', event => {
-      applySearch(event.target.value);
-    });
-    applySearch('');
+    taskSearchInput.addEventListener('input', applyFilters);
   }
+
+  if (statusFilterButton) {
+    statusFilterButton.addEventListener('click', openStatusSheet);
+  }
+
+  statusFilterOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      if (option.classList.contains('active')) {
+        closeStatusSheet();
+        return;
+      }
+      statusFilterOptions.forEach(o => o.classList.remove('active'));
+      option.classList.add('active');
+      currentStatusFilter = option.dataset.statusOption || 'all';
+      if (statusFilterLabel) {
+        statusFilterLabel.textContent = `Filter: ${option.textContent.trim()}`;
+      }
+      closeStatusSheet();
+      applyFilters();
+    });
+  });
+
+  statusFilterDismiss.forEach(trigger => {
+    trigger.addEventListener('click', closeStatusSheet);
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && statusFilterSheet && !statusFilterSheet.classList.contains('hidden')) {
+      closeStatusSheet();
+    }
+  });
+
+  if (statusFilterSheet) {
+    statusFilterSheet.addEventListener('click', event => {
+      if (event.target === statusFilterSheet) {
+        closeStatusSheet();
+      }
+    });
+  }
+
+  applyFilters();
 });
 </script>
 
 </body>
 </html>
+
+

@@ -107,6 +107,27 @@
         margin-top: 0.75rem;
     }
 
+    .comment-sheet__form-actions .btn-modern {
+        border-radius: 999px;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1.25rem;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
+    }
+
+    .comment-sheet__form-actions .btn-modern:hover,
+    .comment-sheet__form-actions .btn-modern:focus-visible {
+        box-shadow: 0 14px 28px rgba(59, 130, 246, 0.5);
+        color: #fff;
+    }
+
+    [data-theme="light"] .comment-sheet__form-actions .btn-modern {
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        color: #f8fafc;
+    }
+
     .comment-sheet-open {
         overflow: hidden;
     }

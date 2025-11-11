@@ -19,14 +19,20 @@ class MonitoringController extends Controller
 
         // Ambil semua users untuk form tambah anggota (hanya admin yang butuh)
         $users = User::whereIn('role', ['team_lead', 'developer', 'designer'])->get();
-        $availableUsers = $users->map(function ($user) {
-            return [
-                'id' => $user->user_id,
-                'role' => $user->role,
-                'name' => $user->full_name ?? $user->username,
-                'username' => $user->username,
-            ];
-        })->values();
+        $idleAssignableUsers = User::whereIn('role', ['developer', 'designer'])
+            ->where('current_task_status', 'idle')
+            ->select('user_id', 'username', 'full_name', 'role')
+            ->orderBy('full_name')
+            ->orderBy('username')
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->user_id,
+                    'role' => $user->role,
+                    'name' => $user->full_name ?: $user->username,
+                    'username' => $user->username,
+                ];
+            })->values();
 
         // Ambil proyek sesuai role
         if ($user->role === 'admin') {
@@ -86,16 +92,16 @@ class MonitoringController extends Controller
             // 🎨 Badge warna & status berdasarkan progress
             if ($progress < 30) {
                 $project->status_color = 'danger';
-                $project->status = 'Low Progress';
+                $project->progress_status = 'Low Progress';
             } elseif ($progress < 70) {
                 $project->status_color = 'warning';
-                $project->status = 'In Progress';
+                $project->progress_status = 'In Progress';
             } elseif ($progress < 100) {
                 $project->status_color = 'info';
-                $project->status = 'Almost Done';
+                $project->progress_status = 'Almost Done';
             } else {
                 $project->status_color = 'success';
-                $project->status = 'Completed';
+                $project->progress_status = 'Completed';
             }
 
             // Hitung jumlah per status untuk tooltip
@@ -199,9 +205,7 @@ class MonitoringController extends Controller
             ->where('current_task_status', 'working')
             ->count();
 
-        $idleUsers = User::whereIn('role', ['developer', 'designer'])
-            ->where('current_task_status', 'idle')
-            ->count();
+        $idleUsers = $idleAssignableUsers->count();
 
         return view('admin.monitoring.index', compact(
             'projects',
@@ -216,7 +220,7 @@ class MonitoringController extends Controller
             'workingUsers',
             'idleUsers',
             'users',
-            'availableUsers',
+            'idleAssignableUsers',
             'userStatusData',
             'userStatusDataSimple',
             'taskStatusData',
@@ -501,3 +505,4 @@ class MonitoringController extends Controller
         }
     }
 }
+

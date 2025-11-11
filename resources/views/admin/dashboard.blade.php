@@ -1328,16 +1328,6 @@ img, video, iframe {
                     <div class="progress-text">{{ $progress }}% Complete</div>
                   </div>
 
-                  <div class="project-actions mt-3">
-                    <button class="btn-modern btn-sm"
-                            data-comment-sheet-trigger="true"
-                            data-comment-type="project"
-                            data-comment-id="{{ $project->project_id }}"
-                            data-comment-title="{{ $project->project_name }}"
-                            data-comment-subtitle="Project Comments">
-                      <i class="bi bi-chat-dots me-1"></i> Comments
-                    </button>
-                  </div>
                 </div>
               </div>
             @endforeach
@@ -1427,16 +1417,6 @@ img, video, iframe {
                     <div class="progress-text">{{ $progress }}% Complete</div>
                   </div>
 
-                  <div class="project-actions mt-3">
-                    <button class="btn-modern btn-sm"
-                            data-comment-sheet-trigger="true"
-                            data-comment-type="project"
-                            data-comment-id="{{ $project->project_id }}"
-                            data-comment-title="{{ $project->project_name }}"
-                            data-comment-subtitle="Project Comments">
-                      <i class="bi bi-chat-dots me-1"></i> Comments
-                    </button>
-                  </div>
                 </div>
               </div>
             @endforeach
@@ -1526,16 +1506,6 @@ img, video, iframe {
                     <div class="progress-text">{{ $progress }}% Complete</div>
                   </div>
 
-                  <div class="project-actions mt-3">
-                    <button class="btn-modern btn-sm"
-                            data-comment-sheet-trigger="true"
-                            data-comment-type="project"
-                            data-comment-id="{{ $project->project_id }}"
-                            data-comment-title="{{ $project->project_name }}"
-                            data-comment-subtitle="Project Comments">
-                      <i class="bi bi-chat-dots me-1"></i> Comments
-                    </button>
-                  </div>
                 </div>
               </div>
             @endforeach
@@ -1721,7 +1691,6 @@ img, video, iframe {
   </div>
 </div>
 
-@include('components.comment-bottom-sheet')
 
 </div>
 @endsection

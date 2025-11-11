@@ -595,24 +595,28 @@
                                     </label>
                                     <div class="input-group-modern">
                                         <i class="bi bi-lock"></i>
-                                        <input type="password" name="password" class="form-control-modern" 
-                                               placeholder="Create a password" required>
-                                    </div>
-                                </div>
+                                <input type="password" name="password" class="form-control-modern" 
+                                       placeholder="Create a password" minlength="6" required
+                                       title="Password minimal 6 karakter">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group-modern">
-                                    <label class="form-label-modern">
-                                        <i class="bi bi-lock-fill"></i>Confirm Password
-                                    </label>
-                                    <div class="input-group-modern">
-                                        <i class="bi bi-lock-fill"></i>
-                                        <input type="password" name="password_confirmation" class="form-control-modern" 
-                                               placeholder="Confirm your password" required>
-                                    </div>
-                                </div>
-                            </div>
+                            <small class="text-muted d-block mt-1">Password minimal 6 karakter sebelum bisa mendaftar.</small>
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="bi bi-lock-fill"></i>Confirm Password
+                            </label>
+                            <div class="input-group-modern">
+                                <i class="bi bi-lock-fill"></i>
+                                <input type="password" name="password_confirmation" class="form-control-modern" 
+                                       placeholder="Confirm your password" minlength="6" required
+                                       title="Harus sama dengan password dan minimal 6 karakter">
+                            </div>
+                            <small class="text-muted d-block mt-1">Pastikan sama dengan password utama.</small>
+                        </div>
+                    </div>
+                </div>
                         
                         <div class="form-group-modern">
                             <label class="form-label-modern">

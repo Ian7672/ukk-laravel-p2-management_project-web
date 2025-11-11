@@ -121,7 +121,7 @@ class UserController extends Controller
 
         $user->update(['role' => $request->role]);
 
-        return back()->with('success', "✅ Role user {$user->username} berhasil diubah menjadi {$request->role}");
+        return back()->with('success', "Role user {$user->username} berhasil diubah menjadi {$request->role}");
     }
 
     /**

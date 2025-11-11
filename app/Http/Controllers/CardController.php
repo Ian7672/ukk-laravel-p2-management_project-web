@@ -45,9 +45,9 @@ class CardController extends Controller
 
         // cek status project
          $project = Project::findOrFail($board->project_id);
-         if ($project->status === 'approved') {
+         if ($project->status === 'selesai') {
              return redirect()->route('teamlead.projects.show', $project->project_id)
-                ->with('error', '⚠ Proyek sudah disetujui, tidak bisa menambahkan card baru.');
+                ->with('error', '⚠ Proyek sudah selesai, tidak bisa menambahkan card baru.');
             }
         // ✅ ambil member project yang role developer/designer
         $members = \App\Models\User::whereIn('role', ['developer', 'designer'])
@@ -68,9 +68,9 @@ class CardController extends Controller
     
     // cek status project
     $project = Project::findOrFail($board->project_id);
-    if ($project->status === 'approved') {
+    if ($project->status === 'selesai') {
         return response()->json([
-            'message' => '⚠ Proyek sudah disetujui, tidak bisa menambahkan card baru.'
+            'message' => '⚠ Proyek sudah selesai, tidak bisa menambahkan card baru.'
         ], 422);
     }
 
@@ -105,19 +105,6 @@ class CardController extends Controller
         ], 422);
     }
 
-    // cek tugas aktif
-    $hasActiveCard = CardAssignment::where('user_id', $user->user_id)
-        ->whereHas('card', function ($q) {
-            $q->whereIn('status', ['todo', 'in_progress', 'review']);
-        })
-        ->exists();
-
-    if ($hasActiveCard) {
-        return response()->json([
-            'errors' => ['username' => ["❌ User {$user->username} sedang ada tugas lain."]]
-        ], 422);
-    }
-
     // tentukan position (auto increment)
     $maxPosition = Card::where('board_id', $board->board_id)->max('position');
     $position = $maxPosition ? $maxPosition + 1 : 1;
@@ -142,7 +129,7 @@ class CardController extends Controller
     ]);
 
     return response()->json([
-        'message' => '✅ Card berhasil dibuat & ditugaskan!',
+        'message' => 'Card berhasil dibuat & ditugaskan!',
         'card' => $card
     ]);
 }
@@ -154,9 +141,9 @@ public function update(Request $request, Board $board, Card $card)
 
     // cek status project
     $project = Project::findOrFail($board->project_id);
-    if ($project->status === 'approved') {
+    if ($project->status === 'selesai') {
         return redirect()->route('teamlead.cards.index', $board->board_id)
-            ->with('error', '⚠ Proyek sudah disetujui, card tidak bisa diperbarui.');
+            ->with('error', '⚠ Proyek sudah selesai, card tidak bisa diperbarui.');
     }
 
     $request->validate([
@@ -196,20 +183,6 @@ public function update(Request $request, Board $board, Card $card)
         ]);
     }
 
-    // cek apakah user sudah punya tugas aktif lain
-    $hasActiveCard = CardAssignment::where('user_id', $user->user_id)
-        ->where('card_id', '!=', $card->card_id)
-        ->whereHas('card', function ($q) {
-            $q->whereIn('status', ['todo', 'in_progress', 'review']);
-        })
-        ->exists();
-
-    if ($hasActiveCard) {
-        throw ValidationException::withMessages([
-            'username' => "❌ User {$user->username} sedang ada tugas lain.",
-        ]);
-    }
-
     // update card
     $position = $request->filled('position') ? $request->position : 1;
 
@@ -234,7 +207,7 @@ public function update(Request $request, Board $board, Card $card)
     ]);
 
     return redirect()->route('teamlead.cards.index', $board)
-        ->with('success', '✅ Card berhasil diperbarui!');
+        ->with('success', 'Card berhasil diperbarui!');
 }
 
     /**
@@ -245,9 +218,9 @@ public function update(Request $request, Board $board, Card $card)
         if (Auth::user()->role !== 'team_lead') abort(403);
          // cek status project
          $project = Project::findOrFail($board->project_id);
-         if ($project->status === 'approved') {
+         if ($project->status === 'selesai') {
              return redirect()->route('teamlead.cards.index', $board->board_id)
-                  ->with('error', '⚠ Proyek sudah disetujui, card tidak bisa dihapus.');
+                  ->with('error', '⚠ Proyek sudah selesai, card tidak bisa dihapus.');
         }
 
         $card->delete();
@@ -282,3 +255,4 @@ public function showDeveloper(Card $card)
 
 
 }
+

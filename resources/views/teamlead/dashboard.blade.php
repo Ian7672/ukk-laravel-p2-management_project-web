@@ -1237,6 +1237,7 @@ body.light-mode .progress-text,
 }
 </style>
 
+@include('partials.profile-quick-sheet')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Inisialisasi tooltip & pencarian proyek

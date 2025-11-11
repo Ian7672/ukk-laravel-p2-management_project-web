@@ -29,6 +29,10 @@ class Project extends Model
         'deadline'   => 'datetime',
     ];
 
+    protected $attributes = [
+        'status' => 'proses',
+    ];
+
     // ✅ Relasi ke Board
     public function boards()
     {

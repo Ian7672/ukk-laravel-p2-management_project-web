@@ -17,8 +17,8 @@ class ProjectMemberController extends Controller
     {
         $project = Project::findOrFail($projectId);
 
-        if ($project->status === 'approved') {
-            return back()->with('error', '❌ Project sudah approved, tidak bisa menambah anggota.');
+        if ($project->status === 'selesai') {
+            return back()->with('error', '❌ Project sudah selesai, tidak bisa menambah anggota.');
         }
 
         $user = User::find($request->user_id);
@@ -40,14 +40,16 @@ class ProjectMemberController extends Controller
         
         // Kalau user statusnya sudah working → tolak
         if ($user->current_task_status === 'working') {
-            return back()->with('error', '⚠ User sedang bekerja di project lain, tunggu sampai project di-approve admin!');
+            return back()->with('error', '⚠ User sedang bekerja di project lain, tunggu sampai project tersebut selesai!');
         }
+
+        $projectRole = $this->resolveProjectRole($user);
 
         // Tambahkan user ke project
         ProjectMember::create([
             'project_id' => $projectId,
             'user_id'    => $user->user_id,
-            'role'       => $request->role, // Gunakan role dari form, bukan dari user
+            'role'       => $projectRole,
             'joined_at'  => now(),
         ]);
 
@@ -73,8 +75,8 @@ class ProjectMemberController extends Controller
             return back()->with('error', '⚠ Tidak bisa edit anggota, subtask sudah berjalan.');
         }
 
-        if ($member->project->status === 'approved') {
-            return back()->with('error', '❌ Project sudah approved, tidak bisa edit anggota.');
+        if ($member->project->status === 'selesai') {
+            return back()->with('error', '❌ Project sudah selesai, tidak bisa edit anggota.');
         }
 
         $request->validate([
@@ -106,10 +108,12 @@ class ProjectMemberController extends Controller
         // Reset status user lama jadi idle
         $member->user->update(['current_task_status' => 'idle']);
 
+        $projectRole = $this->resolveProjectRole($newUser);
+
         // Update user_id ke user baru
         $member->update([
             'user_id' => $newUser->user_id,
-            'role'    => $request->role ?? $newUser->role, // Gunakan role dari form jika ada
+            'role'    => $projectRole,
         ]);
 
         // Update status user baru jadi working
@@ -134,8 +138,8 @@ class ProjectMemberController extends Controller
             return back()->with('error', '⚠ Tidak bisa hapus anggota, subtask sudah berjalan.');
         }
 
-        if ($member->project->status === 'approved') {
-            return back()->with('error', '❌ Project sudah approved, tidak bisa hapus anggota.');
+        if ($member->project->status === 'selesai') {
+            return back()->with('error', '❌ Project sudah selesai, tidak bisa hapus anggota.');
         }
 
         // reset status user jadi idle
@@ -167,10 +171,10 @@ class ProjectMemberController extends Controller
             $q->where('user_id', $user->user_id);
         })->with(['members.user', 'members'])->get();
 
-        // Jika semua project sudah approved → anggap belum ada project aktif
-        $hasApprovedOnly = $projects->every(fn($p) => $p->status === 'approved');
+        // Jika semua project sudah selesai → anggap belum ada project aktif
+        $hasCompletedOnly = $projects->every(fn($p) => $p->status === 'selesai');
 
-        return view('developer.myteam', compact('projects', 'user', 'hasApprovedOnly'));
+        return view('developer.myteam', compact('projects', 'user', 'hasCompletedOnly'));
     }
 
     public function designerTeam()
@@ -182,10 +186,10 @@ class ProjectMemberController extends Controller
             $q->where('user_id', $user->user_id);
         })->with(['members.user', 'members'])->get();
 
-        // Jika semua project sudah approved → anggap belum ada project aktif
-        $hasApprovedOnly = $projects->every(fn($p) => $p->status === 'approved');
+        // Jika semua project sudah selesai → anggap belum ada project aktif
+        $hasCompletedOnly = $projects->every(fn($p) => $p->status === 'selesai');
 
-        return view('designer.myteam', compact('projects', 'user', 'hasApprovedOnly'));
+        return view('designer.myteam', compact('projects', 'user', 'hasCompletedOnly'));
     }
 
     // AJAX Add Member
@@ -195,6 +199,13 @@ class ProjectMemberController extends Controller
             'user_id' => 'required|exists:users,user_id',
             'role'    => 'required|in:team_lead,developer,designer',
         ]);
+
+        if ($project->status === 'selesai') {
+            return response()->json([
+                'status'  => 'error',
+                'message' => '❌ Project sudah selesai, tidak bisa menambah anggota baru.',
+            ], 422);
+        }
 
         $user = \App\Models\User::find($request->user_id);
 
@@ -223,11 +234,13 @@ class ProjectMemberController extends Controller
             ]);
         }
 
+        $projectRole = $this->resolveProjectRole($user);
+
         // Tambahkan ke project
         \App\Models\ProjectMember::create([
             'project_id' => $project->project_id,
             'user_id'    => $user->user_id,
-            'role'       => $request->role,
+            'role'       => $projectRole,
             'joined_at'  => now(),
         ]);
 
@@ -237,12 +250,13 @@ class ProjectMemberController extends Controller
 
         return response()->json([
             'status'  => 'success',
-            'message' => "✅ {$user->username} berhasil ditambahkan.",
+            'message' => "{$user->username} berhasil ditambahkan.",
             'user'    => [
                 'user_id'  => $user->user_id,
                 'username' => $user->username,
             ],
             'role'    => $request->role,
+            'project_role' => $projectRole,
         ]);
     }
 
@@ -257,10 +271,10 @@ public function designerMyTeam()
         $q->where('user_id', $user->user_id);
     })->with(['members.user'])->get();
 
-    $hasApprovedOnly = $projects->where('status', 'approved')->count() > 0 && 
-                      $projects->where('status', '!=', 'approved')->count() === 0;
+    $hasCompletedOnly = $projects->where('status', 'selesai')->count() > 0 && 
+                      $projects->where('status', '!=', 'selesai')->count() === 0;
 
-    return view('designer.myteam', compact('projects', 'user', 'hasApprovedOnly'));
+    return view('designer.myteam', compact('projects', 'user', 'hasCompletedOnly'));
 }
 
 public function fetchMembers(Project $project)
@@ -269,4 +283,11 @@ public function fetchMembers(Project $project)
     return response()->json($members);
 }
 
+
+    private function resolveProjectRole(User $user): string
+    {
+        return $user->role === 'team_lead' ? 'admin' : 'member';
+    }
+
 }
+

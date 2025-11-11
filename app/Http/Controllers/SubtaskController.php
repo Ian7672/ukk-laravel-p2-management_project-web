@@ -19,6 +19,11 @@ class SubtaskController extends Controller
     {
         $role = Auth::user()->role;
 
+        $project = $this->projectFromCard($card);
+        if ($this->isProjectCompleted($project)) {
+            return back()->with('error', 'Proyek ini sudah selesai, subtask baru tidak dapat dibuat.');
+        }
+
         if ($role === 'developer') {
             return view('developer.subtasks.create', compact('card'));
         }
@@ -35,6 +40,11 @@ class SubtaskController extends Controller
      */
     public function store(Request $request, Card $card)
     {
+        $project = $this->projectFromCard($card);
+        if ($this->isProjectCompleted($project)) {
+            return back()->with('error', 'Proyek ini sudah selesai, subtask baru tidak dapat dibuat.');
+        }
+
         $request->validate([
             'subtask_title'   => 'required|string|max:150',
             'description'     => 'nullable|string',
@@ -52,7 +62,7 @@ class SubtaskController extends Controller
             'created_at'     => Carbon::now('Asia/Jakarta'),
         ]);
 
-        return back()->with('success', '✅ Subtask berhasil dibuat');
+        return back()->with('success', 'Subtask berhasil dibuat');
     }
 
     /**
@@ -63,6 +73,11 @@ class SubtaskController extends Controller
         $user = Auth::user();
         if (!in_array($user->role, ['developer', 'designer'])) {
             abort(403, 'Hanya developer/designer yang boleh mulai subtask');
+        }
+
+        $project = $this->projectFromSubtask($subtask);
+        if ($this->isProjectCompleted($project)) {
+            return back()->with('error', 'Proyek ini sudah selesai, subtask tidak dapat dimulai.');
         }
 
         $subtask->update(['status' => 'in_progress']);
@@ -97,6 +112,11 @@ class SubtaskController extends Controller
         $user = Auth::user();
         if (!in_array($user->role, ['developer', 'designer'])) {
             abort(403, 'Hanya developer/designer yang boleh menyelesaikan subtask');
+        }
+
+        $project = $this->projectFromSubtask($subtask);
+        if ($this->isProjectCompleted($project)) {
+            return back()->with('error', 'Proyek ini sudah selesai, subtask tidak dapat diperbarui.');
         }
 
         // Tutup log aktif
@@ -149,6 +169,11 @@ class SubtaskController extends Controller
             abort(403, 'Hanya Team Lead yang boleh approve subtask');
         }
 
+        $project = $this->projectFromSubtask($subtask);
+        if ($this->isProjectCompleted($project)) {
+            return back()->with('error', 'Proyek ini sudah selesai, tidak ada subtask yang perlu diproses.');
+        }
+
         $subtask->update([
             'status' => 'done',
             'reject_reason' => null,
@@ -180,6 +205,11 @@ class SubtaskController extends Controller
         $user = Auth::user();
         if ($user->role !== 'team_lead') {
             abort(403, 'Hanya Team Lead yang boleh reject subtask');
+        }
+
+        $project = $this->projectFromSubtask($subtask);
+        if ($this->isProjectCompleted($project)) {
+            return back()->with('error', 'Proyek ini sudah selesai, tidak ada subtask yang perlu diproses.');
         }
 
         $request->validate([
@@ -247,4 +277,27 @@ class SubtaskController extends Controller
 
         return back()->with('success', '❌ Subtask direject & otomatis masuk ke sesi Rework');
     }
+    protected function projectFromCard(?Card $card)
+    {
+        if (!$card) {
+            return null;
+        }
+
+        $card->loadMissing('board.project');
+
+        return optional($card->board)->project;
+    }
+
+    protected function projectFromSubtask(Subtask $subtask)
+    {
+        $subtask->loadMissing('card.board.project');
+
+        return optional(optional($subtask->card)->board)->project;
+    }
+
+    protected function isProjectCompleted($project): bool
+    {
+        return $project && $project->status === 'selesai';
+    }
+
 }

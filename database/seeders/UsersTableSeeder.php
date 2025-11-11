@@ -50,7 +50,31 @@ class UsersTableSeeder extends Seeder
                 'email' => 'designer1@example.com',
                 'role' => 'designer',
                 'current_task_status' => 'idle'
-            ]
+            ],
+            [
+                'username' => 'teamlead2',
+                'password' => Hash::make('lead123'),
+                'full_name' => 'Team Lead Two',
+                'email' => 'teamlead2@example.com',
+                'role' => 'team_lead',
+                'current_task_status' => 'idle'
+            ],
+            [
+                'username' => 'dev3',
+                'password' => Hash::make('dev123'),
+                'full_name' => 'Developer Three',
+                'email' => 'dev3@example.com',
+                'role' => 'developer',
+                'current_task_status' => 'idle'
+            ],
+            [
+                'username' => 'designer2',
+                'password' => Hash::make('design123'),
+                'full_name' => 'Designer Two',
+                'email' => 'designer2@example.com',
+                'role' => 'designer',
+                'current_task_status' => 'idle'
+            ],
         ];
 
         DB::table('users')->insert($users);

@@ -834,54 +834,6 @@
 
                         </div>
 
-                        <!-- Progress Statistics -->
-                        <div class="progress-card">
-                            <h6 class="section-title">Project Progress</h6>
-                            <div class="progress-stats">
-                                <div class="stat-item">
-                                    <div class="stat-value">{{ $totalSubtasks }}</div>
-                                    <div class="stat-label">Total Subtasks</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">{{ $completedSubtasks }}</div>
-                                    <div class="stat-label">Completed</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">{{ $totalSubtasks - $completedSubtasks }}</div>
-                                    <div class="stat-label">Remaining</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">{{ $progressPercentage }}%</div>
-                                    <div class="stat-label">Progress</div>
-                                </div>
-                            </div>
-                            
-                            <div class="progress team-progress-track">
-                                <div class="progress-bar 
-                                    @if($projectStatus == 'todo') bg-primary
-                                    @elseif($projectStatus == 'in_progress') bg-warning
-                                    @elseif($projectStatus == 'review') bg-info
-                                    @elseif($projectStatus == 'done') bg-success
-                                    @endif" 
-                                    style="width: {{ $progressPercentage }}%;">
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-2">
-                                <small class="progress-caption">Progress: {{ $progressPercentage }}%</small>
-                                <small class="progress-caption">
-                                    @if($projectStatus == 'todo')
-                                        🎯 Planning Phase
-                                    @elseif($projectStatus == 'in_progress')
-                                        🔧 Development Phase
-                                    @elseif($projectStatus == 'review')
-                                        👀 Review Phase
-                                    @elseif($projectStatus == 'done')
-                                        ✅ Completed
-                                    @endif
-                                </small>
-                            </div>
-                        </div>
-
                         <h6 class="section-title">Team Members</h6>
                         <div class="table-responsive">
                             <table class="table table-acrylic mb-0">
@@ -905,10 +857,14 @@
                                             </td>
                                             <td>{{ $member->user->username }}</td>
                                             <td>
-                                                <span class="badge-modern 
-                                                    {{ $member->role == 'admin' ? 'badge-danger' : 
-                                                       ($member->role == 'team_lead' ? 'badge-primary' : 'badge-success') }}">
-                                                    {{ ucfirst($member->role) }}
+                                                @php
+                                                    $displayRole = strtolower($member->user->role ?? $member->role ?? 'member');
+                                                    $roleClass = $displayRole === 'admin'
+                                                        ? 'badge-danger'
+                                                        : ($displayRole === 'team_lead' ? 'badge-primary' : 'badge-success');
+                                                @endphp
+                                                <span class="badge-modern {{ $roleClass }}">
+                                                    {{ ucfirst(str_replace('_', ' ', $displayRole)) }}
                                                 </span>
                                             </td>
                                             <td>
@@ -938,7 +894,7 @@
                 </div>
             @endif
 
-            @if(isset($hasApprovedOnly) && $hasApprovedOnly)
+            @if(isset($hasCompletedOnly) && $hasCompletedOnly)
                 <div class="alert-acrylic alert-warning-acrylic">
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     All your development projects are completed. Please contact admin for new projects.
@@ -983,3 +939,4 @@
 </script>
 </body>
 </html>
+
