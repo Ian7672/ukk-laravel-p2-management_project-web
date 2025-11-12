@@ -1557,7 +1557,18 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                             @if($user->role !== 'admin')
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser({{ $user->user_id }}, '{{ $user->full_name }}')">
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-danger"
+                                                data-action-sheet-trigger
+                                                data-action-title="Hapus User"
+                                                data-action-subtitle="{{ $user->full_name }}"
+                                                data-action-message="Apakah Anda yakin ingin menghapus user {{ $user->full_name }}? Tindakan ini tidak dapat dibatalkan."
+                                                data-action-confirm-label="Hapus"
+                                                data-action-cancel-label="Batal"
+                                                data-action-loading-label="Menghapus..."
+                                                data-action-method="DELETE"
+                                                data-action-url="{{ route('admin.users.destroy', $user->user_id) }}"
+                                                data-action-success="reload">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                             @endif
@@ -1640,32 +1651,6 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
 </div>
 
 @include('components.action-bottom-sheet')
-
-
-
-<!-- Modal Konfirmasi Hapus User -->
-<div class="modal fade" id="deleteUserModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-gradient">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Konfirmasi Hapus User
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda yakin ingin menghapus user <strong id="deleteUserName"></strong>?</p>
-                <p class="text-warning">⚠️ Tindakan ini tidak dapat dibatalkan!</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteUser">
-                    <i class="bi bi-trash me-1"></i>Hapus User
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 </div>
 </div>
@@ -1810,23 +1795,6 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
     function editUser(userId) {
         window.location.href = `{{ url('admin/users') }}/${userId}/edit`;
     }
-    
-    let userToDelete = null;
-    
-    function deleteUser(userId, userName) {
-        userToDelete = userId;
-        document.getElementById('deleteUserName').textContent = userName;
-        new bootstrap.Modal(document.getElementById('deleteUserModal')).show();
-    }
-    
-    document.getElementById('confirmDeleteUser').addEventListener('click', function() {
-        if (userToDelete) {
-            // Implementasi untuk hapus user
-            alert('Fitur hapus user akan segera tersedia untuk user ID: ' + userToDelete);
-            bootstrap.Modal.getInstance(document.getElementById('deleteUserModal')).hide();
-            userToDelete = null;
-        }
-    });
     
     const addUserSheet = document.getElementById('addUserSheet');
     const openAddUserSheetBtn = document.getElementById('openAddUserSheet');

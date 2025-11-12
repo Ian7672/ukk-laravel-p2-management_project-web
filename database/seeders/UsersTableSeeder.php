@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 'username' => 'admin',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('admin555555'),
                 'full_name' => 'Administrator',
                 'email' => 'admin@example.com',
                 'role' => 'admin',
@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'teamlead1',
-                'password' => Hash::make('lead123'),
+                'password' => Hash::make('lead555555'),
                 'full_name' => 'Team Lead One',
                 'email' => 'teamlead1@example.com',
                 'role' => 'team_lead',
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'dev1',
-                'password' => Hash::make('dev123'),
+                'password' => Hash::make('dev555555'),
                 'full_name' => 'Developer One',
                 'email' => 'dev1@example.com',
                 'role' => 'developer',
@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'dev2',
-                'password' => Hash::make('dev123'),
+                'password' => Hash::make('dev555555'),
                 'full_name' => 'Developer Two',
                 'email' => 'dev2@example.com',
                 'role' => 'developer',
@@ -45,7 +45,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'designer1',
-                'password' => Hash::make('design123'),
+                'password' => Hash::make('design555555'),
                 'full_name' => 'Designer One',
                 'email' => 'designer1@example.com',
                 'role' => 'designer',
@@ -53,7 +53,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'teamlead2',
-                'password' => Hash::make('lead123'),
+                'password' => Hash::make('lead555555'),
                 'full_name' => 'Team Lead Two',
                 'email' => 'teamlead2@example.com',
                 'role' => 'team_lead',
@@ -61,7 +61,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'dev3',
-                'password' => Hash::make('dev123'),
+                'password' => Hash::make('dev555555'),
                 'full_name' => 'Developer Three',
                 'email' => 'dev3@example.com',
                 'role' => 'developer',
@@ -69,7 +69,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'username' => 'designer2',
-                'password' => Hash::make('design123'),
+                'password' => Hash::make('design555555'),
                 'full_name' => 'Designer Two',
                 'email' => 'designer2@example.com',
                 'role' => 'designer',
