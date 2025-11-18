@@ -29,12 +29,9 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        // Paksa URL & skema HTTPS saat production (Railway)
-        if (app()->environment('production')) {
-            // Pastikan APP_URL sudah https://domain-kamu
-            if (config('app.url')) {
-                URL::forceRootUrl(config('app.url'));
-            }
+        
+        if (ENV('APP_ENV') === 'ian_production') {
+            
             URL::forceScheme('https');
         }
     }

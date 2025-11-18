@@ -9,9 +9,7 @@
                     <h3 class="card-title">
                         <i class="fas fa-edit me-2"></i>Edit Blocker
                     </h3>
-                    <a href="{{ route('teamlead.blocker.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left me-1"></i>Kembali
-                    </a>
+
                 </div>
                 
                 <div class="card-body">

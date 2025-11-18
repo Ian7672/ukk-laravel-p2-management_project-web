@@ -41,8 +41,32 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting(): void
     {
+        // Default API limiter (bawaan Laravel)
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(60)->by(
+                $request->user()?->id ?: $request->ip()
+            );
+        });
+
+        // 🔐 Login limiter: maksimal 20 percobaan per menit per IP
+        RateLimiter::for('login', function (Request $request) {
+            return [
+                Limit::perMinute(20)->by($request->ip()),
+            ];
+        });
+
+        // 💬 Comments / AJAX limiter: maksimal 60 request per menit per IP
+        RateLimiter::for('comments', function (Request $request) {
+            return [
+                Limit::perMinute(60)->by($request->ip()),
+            ];
+        });
+
+        // 🌐 General authenticated limiter: maksimal 120 request per menit per IP
+        RateLimiter::for('authenticated', function (Request $request) {
+            return [
+                Limit::perMinute(120)->by($request->ip()),
+            ];
         });
     }
 }

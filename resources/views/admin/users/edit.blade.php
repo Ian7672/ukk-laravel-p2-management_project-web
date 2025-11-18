@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Edit User - Admin Panel</title>
@@ -7,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <style>
         * {
             margin: 0;
@@ -36,10 +37,9 @@
             width: 250px;
             height: 100vh;
             background: linear-gradient(135deg,
-                rgba(13, 17, 23, 0.95) 0%,
-                rgba(22, 27, 34, 0.98) 50%,
-                rgba(13, 17, 23, 0.95) 100%
-            );
+                    rgba(13, 17, 23, 0.95) 0%,
+                    rgba(22, 27, 34, 0.98) 50%,
+                    rgba(13, 17, 23, 0.95) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
@@ -88,10 +88,9 @@
             border: none;
             height: 1px;
             background: linear-gradient(90deg,
-                transparent,
-                rgba(139, 92, 246, 0.5),
-                transparent
-            );
+                    transparent,
+                    rgba(139, 92, 246, 0.5),
+                    transparent);
             margin: 1.5rem 0;
         }
 
@@ -181,6 +180,7 @@
                 height: auto;
                 box-shadow: none;
             }
+
             .main-content {
                 margin-left: 0;
                 padding: 20px;
@@ -285,109 +285,126 @@
         .text-danger {
             color: #fca5a5 !important;
         }
+
+        body:not(.light-mode) .status-note {
+            color: #c4c4c4ff !important;
+        }
     </style>
 </head>
-<body>
-<div class="layout-wrapper">
-    <!-- Sidebar -->
-    @include('admin.sidebar')
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="glass-card">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="text-gradient mb-0">
-                    <i class="bi bi-pencil me-2"></i>Edit User
-                </h3>
-                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left me-2"></i>Kembali
-                </a>
-            </div>
-            
-            <form action="{{ route('admin.users.update', $user) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-white">Nama Lengkap</label>
-                            <input type="text" name="full_name" class="form-control" value="{{ old('full_name', $user->full_name) }}" required>
-                            @error('full_name')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-white">Username</label>
-                            <input type="text" name="username" class="form-control" value="{{ old('username', $user->username) }}" required>
-                            @error('username')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-white">Email</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
-                            @error('email')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-white">Role</label>
-                            <select name="role" class="form-select" required>
-                                <option value="team_lead" {{ old('role', $user->role) == 'team_lead' ? 'selected' : '' }}>Team Lead</option>
-                                <option value="developer" {{ old('role', $user->role) == 'developer' ? 'selected' : '' }}>Developer</option>
-                                <option value="designer" {{ old('role', $user->role) == 'designer' ? 'selected' : '' }}>Designer</option>
-                            </select>
-                            @error('role')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-white">Status</label>
-                            <div class="form-control bg-secondary text-white" style="border: 1px solid rgba(255, 255, 255, 0.2);">
-                                {{ ucfirst($user->current_task_status) }}
-                            </div>
-                            <small class="text-muted">Status tidak dapat diubah</small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-white">Bergabung</label>
-                            <div class="form-control bg-secondary text-white" style="border: 1px solid rgba(255, 255, 255, 0.2);">
-                                {{ \Carbon\Carbon::parse($user->created_at)->format('d M Y H:i') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-2"></i>Update User
-                    </button>
+<body>
+    <div class="layout-wrapper">
+        <!-- Sidebar -->
+        @include('admin.sidebar')
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="glass-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-gradient mb-0">
+                        <i class="bi bi-pencil me-2"></i>Edit User
+                    </h3>
                     <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle me-2"></i>Batal
+                        <i class="bi bi-arrow-left me-2"></i>Kembali
                     </a>
                 </div>
-            </form>
+
+                <form action="{{ route('admin.users.update', $user) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Nama Lengkap</label>
+                                <input type="text" name="full_name" class="form-control"
+                                    value="{{ old('full_name', $user->full_name) }}" required>
+                                @error('full_name')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Username</label>
+                                <input type="text" name="username" class="form-control"
+                                    value="{{ old('username', $user->username) }}" required>
+                                @error('username')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Email</label>
+                                <input type="email" name="email" class="form-control"
+                                    value="{{ old('email', $user->email) }}" required>
+                                @error('email')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Role</label>
+                                <select name="role" class="form-select" required>
+                                    <option value="team_lead"
+                                        {{ old('role', $user->role) == 'team_lead' ? 'selected' : '' }}>Team Lead
+                                    </option>
+                                    <option value="developer"
+                                        {{ old('role', $user->role) == 'developer' ? 'selected' : '' }}>Developer
+                                    </option>
+                                    <option value="designer"
+                                        {{ old('role', $user->role) == 'designer' ? 'selected' : '' }}>Designer
+                                    </option>
+                                </select>
+                                @error('role')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Status</label>
+                                <div class="form-control bg-secondary text-white"
+                                    style="border: 1px solid rgba(255, 255, 255, 0.2);">
+                                    {{ ucfirst($user->current_task_status) }}
+                                </div>
+                                <small class="text-muted status-note">Status tidak dapat diubah</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Bergabung</label>
+                                <div class="form-control bg-secondary text-white"
+                                    style="border: 1px solid rgba(255, 255, 255, 0.2);">
+                                    {{ \Carbon\Carbon::parse($user->created_at)->format('d M Y H:i') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Update User
+                        </button>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle me-2"></i>Batal
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

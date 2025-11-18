@@ -180,7 +180,9 @@
                 submitBtn.disabled = true;
             }
 
+            sheet.removeAttribute('hidden');
             sheet.classList.remove('hidden');
+            sheet.setAttribute('aria-hidden', 'false');
             requestAnimationFrame(() => {
                 sheet.classList.add('member-sheet--active');
                 setBodyScroll(true);
@@ -192,6 +194,8 @@
             setBodyScroll(false);
             hideTimeout = setTimeout(() => {
                 sheet.classList.add('hidden');
+                sheet.setAttribute('hidden', 'true');
+                sheet.setAttribute('aria-hidden', 'true');
             }, 220);
         };
 
@@ -347,7 +351,9 @@
                 detailContent.innerHTML = renderProjectDetail(project);
             }
 
+            detailSheet.removeAttribute('hidden');
             detailSheet.classList.remove('hidden');
+            detailSheet.setAttribute('aria-hidden', 'false');
             requestAnimationFrame(() => {
                 detailSheet.classList.add('detail-sheet--active');
                 setDetailBodyState(true);
@@ -360,6 +366,8 @@
             setDetailBodyState(false);
             setTimeout(() => {
                 detailSheet.classList.add('hidden');
+                detailSheet.setAttribute('hidden', 'true');
+                detailSheet.setAttribute('aria-hidden', 'true');
             }, 220);
         };
 
@@ -1074,7 +1082,7 @@
         </div>
     @endif
 </div>
-<div id="monitoringMemberSheet" class="member-sheet hidden" aria-hidden="true">
+<div id="monitoringMemberSheet" class="member-sheet hidden" aria-hidden="true" hidden>
     <div class="member-sheet__overlay" data-member-sheet-dismiss></div>
     <div class="member-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="memberSheetTitle">
         <div class="member-sheet__handle"></div>
@@ -1108,7 +1116,7 @@
         </form>
     </div>
 </div>
-<div id="monitoringDetailSheet" class="detail-sheet hidden" aria-hidden="true">
+<div id="monitoringDetailSheet" class="detail-sheet hidden" aria-hidden="true" hidden>
     <div class="detail-sheet__overlay" data-detail-sheet-dismiss></div>
     <div class="detail-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="detailSheetTitle">
         <div class="detail-sheet__handle"></div>

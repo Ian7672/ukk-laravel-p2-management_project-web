@@ -64,12 +64,14 @@
             justify-content: flex-end;
             gap: 1rem;
             flex: 1 1 auto;
-            min-width: 260px;
+            margin-left: auto;
         }
 
         .topbar-actions .search-input-wrapper {
             position: relative;
-            width: min(360px, 100%);
+            width: clamp(220px, 30vw, 360px);
+            margin-left: auto;
+            margin-right: 0;
         }
 
         .topbar-actions .search-input-wrapper input {
@@ -601,11 +603,14 @@
 
             .topbar-actions {
                 width: 100%;
-                justify-content: stretch;
+                flex: 1 1 100%;
+                margin-left: 0;
+                justify-content: center;
             }
 
             .topbar-actions .search-input-wrapper {
                 width: 100%;
+                margin: 0;
             }
 
             .mobile-nav-wrapper {
@@ -666,6 +671,11 @@
 
             .team-overview-card .btn-modern {
                 width: 100%;
+            }
+
+            .topbar-actions .search-input-wrapper {
+                width: 100%;
+                margin: 0;
             }
         }
 

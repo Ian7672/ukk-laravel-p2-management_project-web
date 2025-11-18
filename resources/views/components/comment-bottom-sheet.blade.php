@@ -265,7 +265,7 @@
     }
 </style>
 
-<div class="comment-sheet hidden" id="commentSheet" aria-hidden="true">
+<div class="comment-sheet hidden" id="commentSheet" aria-hidden="true" hidden>
     <div class="comment-sheet__overlay" data-comment-sheet-close></div>
     <div class="comment-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="commentSheetTitle">
         <div class="comment-sheet__handle"></div>
@@ -456,6 +456,8 @@
             return;
         }
         sheet.classList.add('hidden');
+        sheet.setAttribute('hidden', 'true');
+        sheet.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('comment-sheet-open');
         state.type = null;
         state.entityId = null;
@@ -480,6 +482,7 @@
         textareaEl.value = '';
 
         document.body.classList.add('comment-sheet-open');
+        sheet.removeAttribute('hidden');
         sheet.classList.remove('hidden');
         sheet.setAttribute('aria-hidden', 'false');
 

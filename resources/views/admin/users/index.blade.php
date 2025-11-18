@@ -138,6 +138,18 @@
             box-shadow: 
                 0 18px 42px rgba(0, 0, 0, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            color: var(--light-text-primary);
+        }
+
+        body.light-mode .user-card::before {
+            display: block;
+            background: linear-gradient(160deg,
+                rgba(139, 92, 246, 0.12),
+                transparent 45%,
+                rgba(59, 130, 246, 0.08) 100%
+            );
+            opacity: 0.7;
+            pointer-events: none;
         }
 
         body.light-mode .user-name {
@@ -829,18 +841,16 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
         }
 
         .user-card {
-            background: linear-gradient(135deg,
-                rgba(31, 41, 55, 0.72) 0%,
-                rgba(17, 24, 39, 0.82) 100%
-            );
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.12);
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 20px;
             padding: clamp(1.25rem, 3vw, 1.75rem);
             position: relative;
             overflow: hidden;
             box-shadow:
-                0 18px 42px rgba(0, 0, 0, 0.45),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                0 18px 42px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(18px);
             display: flex;
@@ -852,12 +862,7 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg,
-                rgba(139, 92, 246, 0.12),
-                transparent 45%,
-                rgba(59, 130, 246, 0.08) 100%
-            );
-            opacity: 0.7;
+            display: none;
             pointer-events: none;
         }
 
@@ -1134,6 +1139,32 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
             background: rgba(239, 68, 68, 0.35);
             color: white;
             border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        body:not(.light-mode) .btn-outline-primary {
+            background: rgba(139, 92, 246, 0.18);
+            border-color: rgba(139, 92, 246, 0.55);
+            color: #e0e7ff;
+            box-shadow: 0 8px 18px rgba(124, 58, 237, 0.2);
+        }
+
+        body:not(.light-mode) .btn-outline-primary:hover {
+            background: rgba(139, 92, 246, 0.32);
+            color: #fff;
+            border-color: rgba(139, 92, 246, 0.75);
+        }
+
+        body:not(.light-mode) .btn-outline-danger {
+            background: rgba(239, 68, 68, 0.18);
+            border-color: rgba(239, 68, 68, 0.55);
+            color: #fee2e2;
+            box-shadow: 0 8px 18px rgba(239, 68, 68, 0.18);
+        }
+
+        body:not(.light-mode) .btn-outline-danger:hover {
+            background: rgba(239, 68, 68, 0.32);
+            color: #fff;
+            border-color: rgba(239, 68, 68, 0.75);
         }
 
         .btn-info {
