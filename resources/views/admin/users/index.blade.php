@@ -1626,7 +1626,7 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
 </div>
 
 <!-- Bottom Sheet Tambah User -->
-<div class="add-user-sheet hidden" id="addUserSheet">
+<div class="add-user-sheet hidden" id="addUserSheet" hidden aria-hidden="true">
     <div class="add-user-sheet__overlay" data-sheet-close></div>
     <div class="add-user-sheet__panel">
         <div class="add-user-sheet__handle"></div>
@@ -1833,12 +1833,23 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
         if (!addUserSheet) {
             return;
         }
-        addUserSheet.classList.toggle('hidden', !show);
-        addUserSheet.classList.toggle('show', show);
+
+        if (show) {
+            addUserSheet.classList.remove('hidden');
+            addUserSheet.classList.add('show');
+            addUserSheet.removeAttribute('hidden');
+            addUserSheet.setAttribute('aria-hidden', 'false');
+        } else {
+            addUserSheet.classList.remove('show');
+            addUserSheet.classList.add('hidden');
+            addUserSheet.setAttribute('hidden', 'true');
+            addUserSheet.setAttribute('aria-hidden', 'true');
+        }
+
         document.body.classList.toggle('sheet-open', show);
         if (show) {
             setTimeout(() => {
-                addUserSheet.querySelector('input[name=\"full_name\"]')?.focus();
+                addUserSheet.querySelector('input[name="full_name"]')?.focus();
             }, 150);
         }
     };
@@ -1863,3 +1874,4 @@ body.light-mode .add-user-sheet .add-user-sheet__header .text-muted,
 
     </script>
 @endsection
+

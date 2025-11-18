@@ -33,7 +33,7 @@ class ReportController extends Controller
             'project_id' => 'required|exists:projects,project_id',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'format' => 'required|in:pdf,excel'
+            'format' => 'required|in:pdf'
         ]);
 
         $project = Project::with(['boards.cards.subtasks', 'members.user'])
@@ -51,7 +51,7 @@ class ReportController extends Controller
         // Data progress
         $progressData = $this->getProgressData($project, $startDate, $endDate);
 
-        return $this->renderProjectReport($project, $projectStats, $teamData, $progressData, $request->format);
+        return $this->renderProjectReport($project, $projectStats, $teamData, $progressData, $request->input('format'));
     }
 
     /**
@@ -63,7 +63,7 @@ class ReportController extends Controller
             'user_id' => 'required|exists:users,user_id',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'format' => 'required|in:pdf,excel'
+            'format' => 'required|in:pdf'
         ]);
 
         $user = User::with(['projectMembers.project', 'assignments.card'])
@@ -90,7 +90,7 @@ class ReportController extends Controller
         // Data task completion
         $taskData = $this->getUserTaskData($user, $startDate, $endDate);
 
-        return $this->renderUserReport($user, $userStats, $taskData, $request->format);
+        return $this->renderUserReport($user, $userStats, $taskData, $request->input('format'));
     }
 
     /**
@@ -101,7 +101,7 @@ class ReportController extends Controller
         $request->validate([
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'format' => 'required|in:pdf,excel'
+            'format' => 'required|in:pdf'
         ]);
 
         $startDate = $request->start_date;
@@ -116,7 +116,7 @@ class ReportController extends Controller
         // Data performa tim
         $teamPerformance = $this->getTeamPerformance($startDate, $endDate);
 
-        return $this->renderGeneralReport($generalStats, $activeProjects, $teamPerformance, $request->format);
+        return $this->renderGeneralReport($generalStats, $activeProjects, $teamPerformance, $request->input('format'));
     }
 
     /**
@@ -365,7 +365,7 @@ class ReportController extends Controller
 
     private function renderProjectReport($project, $projectStats, $teamData, $progressData, $format)
     {
-        $view = $format === 'excel' ? 'admin.reports.project-excel' : 'admin.reports.project-pdf';
+        $view = 'admin.reports.project-pdf';
 
         return view($view, [
             'project' => $project,
@@ -378,7 +378,7 @@ class ReportController extends Controller
 
     private function renderUserReport($user, $userStats, $taskData, $format)
     {
-        $view = $format === 'excel' ? 'admin.reports.user-excel' : 'admin.reports.user-pdf';
+        $view = 'admin.reports.user-pdf';
 
         return view($view, [
             'user' => $user,
@@ -390,7 +390,7 @@ class ReportController extends Controller
 
     private function renderGeneralReport($generalStats, $activeProjects, $teamPerformance, $format)
     {
-        $view = $format === 'excel' ? 'admin.reports.general-excel' : 'admin.reports.general-pdf';
+        $view = 'admin.reports.general-pdf';
 
         return view($view, [
             'generalStats' => $generalStats,
