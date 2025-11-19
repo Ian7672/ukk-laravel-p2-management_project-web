@@ -236,7 +236,7 @@ class SubtaskController extends Controller
             $log->update([
                 'end_time' => $end,
                 'duration_minutes' => $minutes,
-                'description' => "❌ Rejected by Team Lead: {$request->reason}",
+                'description' => "❌ Ulangi by Team Lead: {$request->reason}",
             ]);
         } else {
             TimeLog::create([
@@ -246,7 +246,7 @@ class SubtaskController extends Controller
                 'start_time' => Carbon::now('Asia/Jakarta'),
                 'end_time'   => Carbon::now('Asia/Jakarta'),
                 'duration_minutes' => 0,
-                'description' => "❌ Rejected by Team Lead: {$request->reason}",
+                'description' => "❌ Ulangi by Team Lead: {$request->reason}",
             ]);
         }
 

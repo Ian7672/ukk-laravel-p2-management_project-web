@@ -54,6 +54,18 @@ class ReportController extends Controller
         return $this->renderProjectReport($project, $projectStats, $teamData, $progressData, $request->input('format'));
     }
 
+    public function projectPdf(Project $project)
+    {
+        $project = Project::with(['boards.cards.subtasks', 'members.user'])
+            ->findOrFail($project->project_id);
+
+        $projectStats = $this->getProjectStats($project, null, null);
+        $teamData = $this->getTeamData($project);
+        $progressData = $this->getProgressData($project, null, null);
+
+        return $this->renderProjectReport($project, $projectStats, $teamData, $progressData, 'pdf');
+    }
+
     /**
      * Generate laporan tim
      */

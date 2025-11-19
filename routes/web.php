@@ -101,6 +101,7 @@ Route::middleware(['auth', 'throttle:authenticated'])->group(function () {
             Route::post('/project', [ReportController::class, 'generateProjectReport'])->name('project');
             Route::post('/team', [ReportController::class, 'generateTeamReport'])->name('team');
             Route::post('/general', [ReportController::class, 'generateGeneralReport'])->name('general');
+            Route::get('/project/{project}', [ReportController::class, 'projectPdf'])->name('project.pdf');
         });
     });
 
@@ -137,11 +138,7 @@ Route::middleware(['auth', 'throttle:authenticated'])->group(function () {
         // Blocker Management
         Route::prefix('blocker')->name('blocker.')->group(function () {
             Route::get('/', [BlockerController::class, 'teamLeadIndex'])->name('index');
-            Route::get('/{blocker}/edit', [BlockerController::class, 'edit'])->name('edit')->whereNumber('blocker');
-            Route::put('/{blocker}', [BlockerController::class, 'update'])->name('update')->whereNumber('blocker');
-            Route::post('/{blocker}/assign', [BlockerController::class, 'assign'])->name('assign')->whereNumber('blocker');
-            Route::post('/{blocker}/resolve', [BlockerController::class, 'resolve'])->name('resolve')->whereNumber('blocker');
-            Route::post('/{blocker}/reject', [BlockerController::class, 'reject'])->name('reject')->whereNumber('blocker');
+            Route::post('/{blocker}/complete', [BlockerController::class, 'complete'])->name('complete')->whereNumber('blocker');
         });
     });
 

@@ -1066,6 +1066,10 @@
                                 <i class="bi bi-person-plus"></i>
                                 <span>Tambah Member</span>
                             </button>
+                            <a href="{{ route('admin.reports.project.pdf', $project) }}" target="_blank" rel="noopener" class="btn-add-member flex-shrink-0">
+                                <i class="bi bi-printer"></i>
+                                <span>Cetak PDF</span>
+                            </a>
                         </div>
                     </div>
                 </div>

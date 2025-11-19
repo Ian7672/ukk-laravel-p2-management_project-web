@@ -1515,7 +1515,7 @@
 
 <div class="layout-wrapper">
   <!-- Sidebar -->
-  @include('teamlead.sidebar', ['active' => 'dashboard'])
+  @include('components.app-sidebar', ['active' => 'dashboard'])
 
   <!-- Main Content Area -->
   <div class="main-content-area">
@@ -1862,8 +1862,8 @@
     </div>
     <form id="subtaskActionForm">
       <div class="mb-3 d-none" id="subtaskActionReasonGroup">
-        <label class="form-label text-white" for="subtaskActionReason">Alasan Reject</label>
-        <textarea id="subtaskActionReason" class="form-control" rows="3" placeholder="Jelaskan alasan reject..." name="reason"></textarea>
+        <label class="form-label text-white" for="subtaskActionReason">Alasan Ulangi</label>
+        <textarea id="subtaskActionReason" class="form-control" rows="3" placeholder="Jelaskan alasan ulangi..." name="reason"></textarea>
       </div>
       <div class="bottom-sheet__footer">
         <button type="button" class="btn btn-outline-secondary" data-sheet-dismiss="action">Batal</button>
@@ -2035,7 +2035,7 @@ document.addEventListener('DOMContentLoaded', function() {
     subtaskActionSheet.dataset.mode = mode;
     subtaskActionForm.dataset.subtaskId = subtaskId;
     subtaskActionForm.dataset.mode = mode;
-    subtaskActionTitle.textContent = isReject ? 'Tolak Subtask' : 'Setujui Subtask';
+    subtaskActionTitle.textContent = isReject ? 'Ulangi Subtask' : 'Setujui Subtask';
     subtaskActionSubtitle.textContent = title;
 
     if (subtaskActionReasonGroup) {
@@ -2049,7 +2049,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     subtaskActionSubmit.classList.remove('btn-success-modern', 'btn-danger-modern');
     subtaskActionSubmit.classList.add(isReject ? 'btn-danger-modern' : 'btn-success-modern');
-    subtaskActionSubmit.innerHTML = isReject ? 'Tolak' : 'Setujui';
+    subtaskActionSubmit.innerHTML = isReject ? 'Ulangi' : 'Setujui';
     subtaskActionSubmit.disabled = false;
 
     openBottomSheet(subtaskActionSheet);
@@ -2665,7 +2665,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <button type="button" class="btn-modern btn-danger-modern btn-sm subtask-reject-btn" 
                     data-subtask-id="${subtask.subtask_id}"
                     data-subtask-title="${escapeHtml(subtask.subtask_title)}">
-                ❌ Reject
+                ❌ Ulangi
             </button>
             <button type="button" class="btn-modern btn-info-modern btn-sm subtask-comments-btn" 
                     data-subtask-id="${subtask.subtask_id}"
@@ -2823,7 +2823,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const reason = subtaskActionReasonInput ? subtaskActionReasonInput.value.trim() : '';
     if (mode === 'reject' && !reason) {
-      alert('Harap masukkan alasan reject');
+      alert('Harap masukkan alasan ulangi');
       if (subtaskActionReasonInput) {
         subtaskActionReasonInput.focus();
       }

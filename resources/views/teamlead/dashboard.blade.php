@@ -862,7 +862,7 @@ body.light-mode .progress-text,
 
 <div class="layout-wrapper">
     <!-- Fixed Floating Sidebar -->
-    @include('teamlead.sidebar')
+    @include('components.app-sidebar')
 
     <!-- Main Content Area -->
     <div class="main-content-area">
@@ -920,18 +920,29 @@ body.light-mode .progress-text,
                             $totalSubtasks = 0;
                             $doneSubtasks = 0;
                             $cardCount = 0;
+                            $hasReviewSubtasks = false;
 
                             foreach ($project->boards as $board) {
                                 $cardCount += $board->cards->count();
                                 foreach ($board->cards as $card) {
                                     $totalSubtasks += $card->subtasks->count();
                                     $doneSubtasks += $card->subtasks->where('status', 'done')->count();
+                                    if (!$hasReviewSubtasks && $card->subtasks->where('status', 'review')->isNotEmpty()) {
+                                        $hasReviewSubtasks = true;
+                                    }
                                 }
                             }
 
                             $progress = $totalSubtasks > 0 ? round(($doneSubtasks / $totalSubtasks) * 100) : 0;
 
-                            if ($progress < 30) {
+                            $projectState = strtolower($project->status ?? 'proses');
+                            $projectMarkedDone = $projectState === 'selesai';
+
+                            if ($projectMarkedDone) {
+                                $progressClass = 'progress-bar-success';
+                                $statusClass = 'status-chip-success';
+                                $statusLabel = 'Completed';
+                            } elseif ($progress < 30) {
                                 $progressClass = 'progress-bar-danger';
                                 $statusClass = 'status-chip-danger';
                                 $statusLabel = 'Low Progress';
@@ -944,9 +955,9 @@ body.light-mode .progress-text,
                                 $statusClass = 'status-chip-info';
                                 $statusLabel = 'Almost Done';
                             } else {
-                                $progressClass = 'progress-bar-success';
-                                $statusClass = 'status-chip-success';
-                                $statusLabel = 'Completed';
+                                $progressClass = 'progress-bar-info';
+                                $statusClass = 'status-chip-info';
+                                $statusLabel = 'Awaiting Completion';
                             }
 
                             $deadlineText = $project->deadline
@@ -976,7 +987,12 @@ body.light-mode .progress-text,
                                         <i class="bi bi-calendar-event me-2"></i>{{ $deadlineText }}
                                     </p>
                                 </div>
-                                <span class="status-chip {{ $statusClass }}">{{ $statusLabel }}</span>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="status-chip {{ $statusClass }}">{{ $statusLabel }}</span>
+                                    @if($hasReviewSubtasks)
+                                        <span class="status-chip status-chip-info">Review</span>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="project-progress mt-4">
@@ -1249,6 +1265,7 @@ body.light-mode .progress-text,
 </style>
 
 @include('partials.profile-quick-sheet')
+@include('components.theme-toggle')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Inisialisasi tooltip & pencarian proyek

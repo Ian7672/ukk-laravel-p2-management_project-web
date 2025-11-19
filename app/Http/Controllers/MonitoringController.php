@@ -90,7 +90,13 @@ class MonitoringController extends Controller
             $project->progress = $progress;
 
             // 🎨 Badge warna & status berdasarkan progress
-            if ($progress < 30) {
+            $projectState = strtolower($project->status ?? 'proses');
+            $projectMarkedDone = $projectState === 'selesai';
+
+            if ($projectMarkedDone) {
+                $project->status_color = 'success';
+                $project->progress_status = 'Completed';
+            } elseif ($progress < 30) {
                 $project->status_color = 'danger';
                 $project->progress_status = 'Low Progress';
             } elseif ($progress < 70) {
@@ -100,8 +106,8 @@ class MonitoringController extends Controller
                 $project->status_color = 'info';
                 $project->progress_status = 'Almost Done';
             } else {
-                $project->status_color = 'success';
-                $project->progress_status = 'Completed';
+                $project->status_color = 'info';
+                $project->progress_status = 'Awaiting Completion';
             }
 
             // Hitung jumlah per status untuk tooltip

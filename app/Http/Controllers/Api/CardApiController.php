@@ -36,8 +36,11 @@ class CardApiController extends Controller
         $card->load([
             'board.project:project_id,project_name',
             'assignments.user:user_id,full_name,role',
-            'subtasks.blockers.user:user_id,full_name,role',
-            'subtasks.blockers.assignedTo:user_id,full_name,role',
+            'subtasks' => function ($subtaskQuery) {
+                $subtaskQuery->with(['blockers' => function ($blockerQuery) {
+                    $blockerQuery->select('blocker_id', 'subtask_id', 'user_id', 'status', 'created_at');
+                }]);
+            },
         ])->loadCount('comments');
 
         return response()->json([

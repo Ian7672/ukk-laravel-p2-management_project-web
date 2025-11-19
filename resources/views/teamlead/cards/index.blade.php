@@ -795,8 +795,8 @@
                         <form method="POST" action="{{ route('teamlead.subtasks.reject', $card->card_id) }}" class="m-0">
                           @csrf
                           <button type="submit" class="btn-modern btn-danger-modern btn-sm w-100"
-                                  onclick="return confirm('Reject card ini?')">
-                            <i class="bi bi-x-circle me-1"></i>Reject
+                                  onclick="return confirm('Ulangi card ini?')">
+                            <i class="bi bi-x-circle me-1"></i>Ulangi
                           </button>
                         </form>
                       @endif

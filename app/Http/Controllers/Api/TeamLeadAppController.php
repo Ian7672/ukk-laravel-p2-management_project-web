@@ -62,31 +62,19 @@ class TeamLeadAppController extends Controller
 
         $blockers = Blocker::with([
             'user:user_id,full_name,role',
-            'assignedTo:user_id,full_name,role',
             'subtask.card.board.project',
         ])
-            ->where(function ($query) use ($user) {
-                $query->whereNull('assigned_to')
-                    ->orWhere('assigned_to', $user->user_id);
-            })
             ->orderByDesc('created_at')
             ->limit(20)
             ->get()
             ->map(function (Blocker $blocker) {
                 return [
                     'id' => $blocker->blocker_id,
-                    'description' => $blocker->description,
-                    'priority' => $blocker->priority,
                     'status' => $blocker->status,
                     'requested_by' => $blocker->user ? [
                         'id' => $blocker->user->user_id,
                         'name' => $blocker->user->full_name,
                         'role' => $blocker->user->role,
-                    ] : null,
-                    'assigned_to' => $blocker->assignedTo ? [
-                        'id' => $blocker->assignedTo->user_id,
-                        'name' => $blocker->assignedTo->full_name,
-                        'role' => $blocker->assignedTo->role,
                     ] : null,
                     'project' => $blocker->subtask && $blocker->subtask->card && $blocker->subtask->card->board && $blocker->subtask->card->board->project ? [
                         'id' => $blocker->subtask->card->board->project->project_id,
@@ -100,8 +88,7 @@ class TeamLeadAppController extends Controller
                         'id' => $blocker->subtask->subtask_id,
                         'title' => $blocker->subtask->subtask_title,
                     ] : null,
-                    'solution' => $blocker->solution,
-                    'resolved_at' => ProjectPresenter::formatDate($blocker->resolved_at),
+                    'reported_at' => ProjectPresenter::formatDate($blocker->created_at),
                 ];
             });
 

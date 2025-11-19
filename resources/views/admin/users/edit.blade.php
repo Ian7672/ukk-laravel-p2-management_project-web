@@ -48,7 +48,6 @@
             overflow-x: hidden;
             padding: 1.5rem;
         }
-
         .acrylic-sidebar-fixed::before {
             content: '';
             position: absolute;
@@ -295,7 +294,7 @@
 <body>
     <div class="layout-wrapper">
         <!-- Sidebar -->
-        @include('admin.sidebar')
+        @include('components.app-sidebar')
 
         <!-- Main Content -->
         <div class="main-content">

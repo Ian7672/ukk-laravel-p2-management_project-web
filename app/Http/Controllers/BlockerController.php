@@ -6,7 +6,6 @@ use App\Models\Blocker;
 use App\Models\Card;
 use App\Models\Subtask;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +20,7 @@ class BlockerController extends Controller
         $user = Auth::user();
         $supportsSubtask = $this->supportsSubtaskSchema();
 
-        $query = Blocker::with(['assignedTo'])
+        $query = Blocker::query()
             ->where('user_id', $user->user_id)
             ->orderBy('created_at', 'desc');
 
@@ -99,8 +98,6 @@ class BlockerController extends Controller
         $request->validate([
             'card_id' => 'required|exists:cards,card_id',
             'subtask_id' => 'required|exists:subtasks,subtask_id',
-            'description' => 'required|string|min:10',
-            'priority' => 'required|in:low,medium,high,urgent'
         ]);
 
         $user = Auth::user();
@@ -127,7 +124,7 @@ class BlockerController extends Controller
 
         $existingBlocker = Blocker::where('user_id', $user->user_id)
             ->where('subtask_id', $request->subtask_id)
-            ->whereIn('status', ['pending', 'in_progress'])
+            ->where('status', 'pending')
             ->first();
 
         if ($existingBlocker) {
@@ -137,8 +134,6 @@ class BlockerController extends Controller
         Blocker::create([
             'user_id' => $user->user_id,
             'subtask_id' => $subtask->subtask_id,
-            'description' => $request->description,
-            'priority' => $request->priority,
             'status' => 'pending'
         ]);
 
@@ -164,7 +159,8 @@ class BlockerController extends Controller
             ], 403);
         }
 
-        $blockers = Blocker::with(['assignedTo'])
+        $blockers = Blocker::query()
+            ->select('blocker_id', 'subtask_id', 'user_id', 'status', 'created_at')
             ->where('subtask_id', $subtask->subtask_id)
             ->orderBy('created_at', 'desc')
             ->get()
@@ -186,11 +182,6 @@ class BlockerController extends Controller
             ], 400);
         }
 
-        $request->validate([
-            'description' => 'nullable|string|max:1000',
-            'priority' => 'nullable|in:low,medium,high,urgent',
-        ]);
-
         $user = Auth::user();
 
         if ($subtask->status === 'done') {
@@ -207,7 +198,7 @@ class BlockerController extends Controller
 
         $existingBlocker = Blocker::where('user_id', $user->user_id)
             ->where('subtask_id', $subtask->subtask_id)
-            ->whereIn('status', ['pending', 'in_progress'])
+            ->where('status', 'pending')
             ->first();
 
         if ($existingBlocker) {
@@ -216,25 +207,13 @@ class BlockerController extends Controller
             ], 409);
         }
 
-        $description = trim($request->description ?? '');
-        if ($description === '') {
-            $userName = $user->full_name ?? $user->username;
-            $description = sprintf(
-                'Permintaan solver otomatis oleh %s pada %s.',
-                $userName,
-                Carbon::now('Asia/Jakarta')->translatedFormat('d M Y H:i')
-            );
-        }
-
         $blocker = Blocker::create([
             'user_id' => $user->user_id,
             'subtask_id' => $subtask->subtask_id,
-            'description' => $description,
-            'priority' => $request->priority ?? 'medium',
             'status' => 'pending',
         ]);
 
-        $formatted = $this->formatBlockerForResponse($blocker->fresh(['assignedTo']));
+        $formatted = $this->formatBlockerForResponse($blocker->fresh());
 
         return response()->json([
             'message' => 'Solver berhasil dikirim ke Team Lead.',
@@ -255,9 +234,8 @@ class BlockerController extends Controller
         $supportsSubtask = $this->supportsSubtaskSchema();
 
         if ($supportsSubtask) {
-            $blocker->load(['subtask.card.board.project', 'assignedTo']);
+            $blocker->load(['subtask.card.board.project']);
         } else {
-            $blocker->load(['assignedTo']);
             $blocker->legacy_card = Card::with(['board.project'])->find($blocker->card_id);
         }
 
@@ -271,8 +249,7 @@ class BlockerController extends Controller
     {
         $supportsSubtask = $this->supportsSubtaskSchema();
 
-        $query = Blocker::with(['user', 'assignedTo'])
-            ->orderBy('priority', 'desc')
+        $query = Blocker::with(['user'])
             ->orderBy('created_at', 'desc');
 
         if ($supportsSubtask) {
@@ -293,108 +270,24 @@ class BlockerController extends Controller
     }
 
     /**
-     * Assign blocker ke team lead
+     * Tandai blocker selesai oleh team lead.
      */
-    public function assign(Request $request, Blocker $blocker)
+    public function complete(Blocker $blocker)
     {
-        $request->validate([
-            'assigned_to' => 'required|exists:users,user_id'
-        ]);
-
-        $blocker->update([
-            'assigned_to' => $request->assigned_to,
-            'status' => 'in_progress',
-            'resolved_at' => null,
-            'rejected_at' => null,
-        ]);
-
-        return back()->with('success', 'Blocker berhasil ditugaskan ke team lead.');
-    }
-
-    /**
-     * Resolve blocker
-     */
-    public function resolve(Request $request, Blocker $blocker)
-    {
-        $request->validate([
-            'solution' => 'required|string|min:10'
-        ]);
-
-        $blocker->update([
-            'solution' => $request->solution,
-            'status' => 'resolved',
-            'resolved_at' => now(),
-            'rejected_at' => null,
-        ]);
-
-        return back()->with('success', 'Blocker berhasil diselesaikan.');
-    }
-
-    /**
-     * Reject blocker
-     */
-    public function reject(Request $request, Blocker $blocker)
-    {
-        $request->validate([
-            'reason' => 'required|string|min:10'
-        ]);
-
-        $blocker->update([
-            'solution' => $request->reason,
-            'status' => 'rejected',
-            'resolved_at' => null,
-            'rejected_at' => now(),
-        ]);
-
-        return back()->with('success', 'Blocker ditolak dengan alasan yang diberikan.');
-    }
-
-    /**
-     * Tampilkan form edit blocker (untuk team lead)
-     */
-    public function edit(Blocker $blocker)
-    {
-        $supportsSubtask = $this->supportsSubtaskSchema();
-
-        $teamLeads = User::where('role', 'team_lead')->get();
-
-        if ($supportsSubtask) {
-            $blocker->load(['user', 'subtask.card.board.project']);
-        } else {
-            $blocker->load(['user']);
-            $blocker->legacy_card = Card::with(['board.project'])->find($blocker->card_id);
+        $user = auth()->user();
+        if ($user->role !== 'team_lead') {
+            abort(403, 'Hanya Team Lead yang dapat menandai blocker selesai.');
         }
 
-        return view('teamlead.blocker.edit', compact('blocker', 'teamLeads', 'supportsSubtask'));
-    }
-
-    /**
-     * Update blocker
-     */
-    public function update(Request $request, Blocker $blocker)
-    {
-        $request->validate([
-            'assigned_to' => 'nullable|exists:users,user_id',
-            'priority' => 'required|in:low,medium,high,urgent',
-            'status' => 'required|in:pending,in_progress,resolved,rejected'
-        ]);
-
-        $data = $request->only(['assigned_to', 'priority', 'status']);
-
-        if ($data['status'] === 'resolved') {
-            $data['resolved_at'] = now();
-            $data['rejected_at'] = null;
-        } elseif ($data['status'] === 'rejected') {
-            $data['rejected_at'] = now();
-            $data['resolved_at'] = null;
-        } else {
-            $data['resolved_at'] = null;
-            $data['rejected_at'] = null;
+        if ($blocker->status === 'selesai') {
+            return back()->with('info', 'Blocker sudah ditandai selesai.');
         }
 
-        $blocker->update($data);
+        $blocker->update([
+            'status' => 'selesai',
+        ]);
 
-        return back()->with('success', 'Blocker berhasil diperbarui.');
+        return back()->with('success', 'Blocker berhasil ditandai selesai.');
     }
 
     private function userCanAccessSubtask(Subtask $subtask, User $user): bool
@@ -416,36 +309,14 @@ class BlockerController extends Controller
 
     private function formatBlockerForResponse(Blocker $blocker): array
     {
-        $statusLabels = [
-            'pending' => 'Pending',
-            'in_progress' => 'Sedang Ditangani',
-            'resolved' => 'Selesai',
-            'rejected' => 'Ditolak',
-        ];
-
-        $statusClasses = [
-            'pending' => 'solver-status--pending',
-            'in_progress' => 'solver-status--progress',
-            'resolved' => 'solver-status--resolved',
-            'rejected' => 'solver-status--rejected',
-        ];
-
-        $blocker->loadMissing('assignedTo');
+        $status = strtolower($blocker->status ?? 'pending');
+        $normalizedStatus = $status === 'pending' ? 'pending' : 'selesai';
 
         return [
             'blocker_id' => $blocker->blocker_id,
-            'description' => $blocker->description,
-            'priority' => ucfirst($blocker->priority),
-            'status' => $blocker->status,
-            'status_label' => $statusLabels[$blocker->status] ?? ucfirst($blocker->status),
-            'status_class' => $statusClasses[$blocker->status] ?? 'solver-status--pending',
-            'created_at' => $blocker->created_at?->translatedFormat('d M Y H:i'),
-            'created_human' => $blocker->created_at?->diffForHumans(),
-            'resolved_at' => $blocker->resolved_at?->translatedFormat('d M Y H:i'),
-            'resolved_human' => $blocker->resolved_at?->diffForHumans(),
-            'rejected_at' => $blocker->rejected_at?->translatedFormat('d M Y H:i'),
-            'rejected_human' => $blocker->rejected_at?->diffForHumans(),
-            'team_lead' => $blocker->assignedTo?->full_name,
+            'blocker_user_id' => $blocker->user_id,
+            'blocker_date' => $blocker->created_at?->format('Y-m-d H:i:s'),
+            'status' => $normalizedStatus,
         ];
     }
 

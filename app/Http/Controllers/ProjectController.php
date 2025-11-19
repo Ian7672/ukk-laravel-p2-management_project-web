@@ -189,7 +189,9 @@ class ProjectController extends Controller
         'board.project',
         'subtasks' => function ($query) {
             $query->with(['blockers' => function ($blockerQuery) {
-                $blockerQuery->whereIn('status', ['pending', 'in_progress']);
+                $blockerQuery
+                    ->select('blocker_id', 'subtask_id', 'user_id', 'status', 'created_at')
+                    ->where('status', 'pending');
             }]);
         },
     ]) // tambahkan subtasks dan solver aktif
@@ -214,7 +216,9 @@ class ProjectController extends Controller
         'board.project',
         'subtasks' => function ($query) {
             $query->with(['blockers' => function ($blockerQuery) {
-                $blockerQuery->whereIn('status', ['pending', 'in_progress']);
+                $blockerQuery
+                    ->select('blocker_id', 'subtask_id', 'user_id', 'status', 'created_at')
+                    ->where('status', 'pending');
             }]);
         },
     ]) // tambahkan subtasks dan solver aktif

@@ -726,7 +726,7 @@
 </head>
 <body>
 <div class="layout-wrapper">
-    @include('developer.sidebar')
+    @include('components.app-sidebar')
 
     <div class="main-content-area">
         <nav class="navbar-acrylic">
@@ -797,27 +797,36 @@
                                         $projectStatus = 'done';
                                         $statusText = 'Done';
                                     }
+                                    $projectState = strtolower($project->status ?? 'proses');
+                                    $projectMarkedDone = $projectState === 'selesai';
+
+                                    if ($projectMarkedDone) {
+                                        $projectStatus = 'done';
+                                        $statusText = 'Completed';
+                                    } elseif ($progressPercentage == 0) {
+                                        $projectStatus = 'todo';
+                                        $statusText = 'To Do';
+                                    } elseif ($progressPercentage > 0 && $progressPercentage < 100) {
+                                        $projectStatus = 'in_progress';
+                                        $statusText = 'In Progress';
+                                    } else {
+                                        $projectStatus = 'in_progress';
+                                        $statusText = 'Awaiting Completion';
+                                    }
+
+                                    $statusClasses = [
+                                        'todo' => 'status-todo',
+                                        'in_progress' => 'status-in-progress',
+                                        'review' => 'status-review',
+                                        'done' => 'status-done',
+                                    ];
+                                    $statusBadgeClass = $statusClasses[$projectStatus] ?? 'badge-secondary';
                                 @endphp
 
                             </div>
-                            <span class="project-status-badge 
-                                        @if($projectStatus == 'todo') status-todo
-                                        @elseif($projectStatus == 'in_progress') status-in-progress
-                                        @elseif($projectStatus == 'review') status-review
-                                        @elseif($projectStatus == 'done') status-done
-                                        @else badge-secondary @endif">
-                                        @if($projectStatus == 'todo')
-                                            To Do
-                                        @elseif($projectStatus == 'in_progress')
-                                            In Progress
-                                        @elseif($projectStatus == 'review')
-                                            Review
-                                        @elseif($projectStatus == 'done')
-                                            Done
-                                        @else
-                                            {{ ucfirst($projectStatus) }}
-                                        @endif
-                                    </span>
+                            <span class="project-status-badge {{ $statusBadgeClass }}">
+                                {{ $statusText }}
+                            </span>
                         </div>
 
                         <p class="project-description">{{ $project->description }}</p>
@@ -943,6 +952,7 @@
         filterCards();
     });
 </script>
+@include('components.theme-toggle')
 @include('partials.profile-quick-sheet')
 </body>
 </html>

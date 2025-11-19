@@ -51,31 +51,10 @@
                             </div>
                         @endif
 
-                        <div class="mb-3">
-                            <label class="form-label">Priority</label>
-                            <select name="priority" class="form-select @error('priority') is-invalid @enderror" required>
-                                <option value="">Pilih Priority</option>
-                                <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Low</option>
-                                <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Medium</option>
-                                <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
-                                <option value="urgent" {{ old('priority') == 'urgent' ? 'selected' : '' }}>Urgent</option>
-                            </select>
-                            @error('priority')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Deskripsi Blocker</label>
-                            <textarea name="description" class="form-control @error('description') is-invalid @enderror" 
-                                      rows="5" placeholder="Jelaskan secara detail masalah yang Anda hadapi, apa yang sudah dicoba, dan bantuan apa yang dibutuhkan..." required>{{ old('description') }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="form-text">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Jelaskan dengan detail agar team lead dapat memberikan solusi yang tepat.
-                            </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Setelah Anda memilih card dan subtask, laporan akan langsung dikirim ke Team Lead dengan status <strong>pending</strong>.
+                            Team Lead akan menandai blocker sebagai selesai setelah memberikan bantuan.
                         </div>
 
                         <div class="d-flex justify-content-between">

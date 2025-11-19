@@ -41,9 +41,11 @@ class ProjectApiController extends Controller
                 $cardQuery
                     ->with([
                         'assignments.user:user_id,full_name,role',
-                        'subtasks.blockers.user:user_id,full_name,role',
-                        'subtasks.blockers.assignedTo:user_id,full_name,role',
-                        'subtasks',
+                        'subtasks' => function ($subtaskQuery) {
+                            $subtaskQuery->with(['blockers' => function ($blockerQuery) {
+                                $blockerQuery->select('blocker_id', 'subtask_id', 'user_id', 'status', 'created_at');
+                            }]);
+                        },
                     ])
                     ->withCount('comments');
             },

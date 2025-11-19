@@ -1691,7 +1691,7 @@
 <body>
 
 <div class="layout-wrapper">
-  @include('designer.sidebar')
+  @include('components.app-sidebar')
 
   <!-- Main Content Area -->
   <div class="main-content-area">
@@ -1709,10 +1709,10 @@
             <i class="bi me-2"></i>Dashboard
           </span>
         </div>
-        <div class="topbar-actions ms-auto">
-          <div class="search-input-wrapper">
-            <i class="bi bi-search"></i>
-            <input type="search"
+                <div class="topbar-actions ms-auto">
+                  <div class="search-input-wrapper">
+                    <i class="bi bi-search"></i>
+                    <input type="search"
                    id="taskSearchInput"
                    placeholder="Search tasks or subtasks...">
           </div>
@@ -1948,18 +1948,17 @@
                                   data-action-message="Kirim permintaan bantuan kepada Team Lead untuk subtask ini?"
                                   data-action-confirm-label="Kirim Solver"
                                   data-action-loading-label="Mengirim..."
-                                  data-action-success="reload"
-                                  data-action-payload='@json(["priority" => "medium"])'>
+                                  data-action-success="reload">
                             Solver
                           </button>
                         @elseif($activeSolver)
                           <span class="badge-modern badge-warning">
-                            Solver {{ $activeSolver->status === 'in_progress' ? 'sedang diproses' : 'menunggu' }}
+                            Solver {{ $activeSolver->status === 'selesai' ? 'selesai' : 'menunggu' }}
                           </span>
                         @endif
                       @elseif($activeSolver)
                         <span class="badge-modern badge-warning">
-                          Solver {{ $activeSolver->status === 'in_progress' ? 'sedang diproses' : 'menunggu' }}
+                          Solver {{ $activeSolver->status === 'selesai' ? 'selesai' : 'menunggu' }}
                         </span>
                       @elseif($st->status !== 'done')
                         <span class="badge-modern badge-success">Tindakan terkunci</span>
@@ -1992,6 +1991,7 @@
 @include('components.comment-bottom-sheet')
 @include('components.subtask-bottom-sheet')
 @include('components.action-bottom-sheet')
+@include('components.theme-toggle')
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @include('partials.profile-quick-sheet')

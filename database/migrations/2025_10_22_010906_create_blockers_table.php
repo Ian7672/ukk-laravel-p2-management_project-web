@@ -15,17 +15,11 @@ return new class extends Migration
             $table->id('blocker_id');
             $table->unsignedBigInteger('user_id'); // User yang meminta bantuan
             $table->unsignedBigInteger('subtask_id'); // Subtask yang terblokir
-            $table->text('description'); // Deskripsi blocker
-            $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('medium');
-            $table->enum('status', ['pending', 'in_progress', 'resolved', 'rejected'])->default('pending');
-            $table->unsignedBigInteger('assigned_to')->nullable(); // Team lead yang ditugaskan
-            $table->text('solution')->nullable(); // Solusi dari team lead
-            $table->timestamp('resolved_at')->nullable();
+            $table->enum('status', ['pending', 'selesai'])->default('pending');
             $table->timestamps();
             
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('subtask_id')->references('subtask_id')->on('subtasks')->onDelete('cascade');
-            $table->foreign('assigned_to')->references('user_id')->on('users')->onDelete('set null');
         });
     }
 

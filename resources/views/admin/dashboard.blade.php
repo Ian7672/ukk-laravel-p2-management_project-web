@@ -1255,8 +1255,14 @@ img, video, iframe {
                     $progress = 0;
                 }
                 
-                // Status dan warna berdasarkan progress
-                if ($progress < 30) {
+                // Status dan warna berdasarkan progress + status manual Team Lead
+                $projectState = strtolower($project->status ?? 'proses');
+                $projectMarkedDone = $projectState === 'selesai';
+
+                if ($projectMarkedDone) {
+                    $status_color = 'success';
+                    $status = 'Completed';
+                } elseif ($progress < 30) {
                     $status_color = 'danger';
                     $status = 'Low Progress';
                 } elseif ($progress < 70) {
@@ -1266,8 +1272,8 @@ img, video, iframe {
                     $status_color = 'info';
                     $status = 'Almost Done';
                 } else {
-                    $status_color = 'success';
-                    $status = 'Completed';
+                    $status_color = 'info';
+                    $status = 'Awaiting Completion';
                 }
               @endphp
               
@@ -1344,8 +1350,14 @@ img, video, iframe {
                     $progress = 0;
                 }
                 
-                // Status dan warna berdasarkan progress
-                if ($progress < 30) {
+                // Status dan warna berdasarkan progress + status manual Team Lead
+                $projectState = strtolower($project->status ?? 'proses');
+                $projectMarkedDone = $projectState === 'selesai';
+
+                if ($projectMarkedDone) {
+                    $status_color = 'success';
+                    $status = 'Completed';
+                } elseif ($progress < 30) {
                     $status_color = 'danger';
                     $status = 'Low Progress';
                 } elseif ($progress < 70) {
@@ -1355,8 +1367,8 @@ img, video, iframe {
                     $status_color = 'info';
                     $status = 'Almost Done';
                 } else {
-                    $status_color = 'success';
-                    $status = 'Completed';
+                    $status_color = 'info';
+                    $status = 'Awaiting Completion';
                 }
               @endphp
               
@@ -1433,8 +1445,14 @@ img, video, iframe {
                     $progress = 0;
                 }
                 
-                // Status dan warna berdasarkan progress
-                if ($progress < 30) {
+                // Status dan warna berdasarkan progress + status manual Team Lead
+                $projectState = strtolower($project->status ?? 'proses');
+                $projectMarkedDone = $projectState === 'selesai';
+
+                if ($projectMarkedDone) {
+                    $status_color = 'success';
+                    $status = 'Completed';
+                } elseif ($progress < 30) {
                     $status_color = 'danger';
                     $status = 'Low Progress';
                 } elseif ($progress < 70) {
@@ -1444,8 +1462,8 @@ img, video, iframe {
                     $status_color = 'info';
                     $status = 'Almost Done';
                 } else {
-                    $status_color = 'success';
-                    $status = 'Completed';
+                    $status_color = 'info';
+                    $status = 'Awaiting Completion';
                 }
               @endphp
               

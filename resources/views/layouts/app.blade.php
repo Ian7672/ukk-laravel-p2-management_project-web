@@ -477,6 +477,7 @@
             window.__sidebarToggleInitialized = true;
         });
     </script>
+    @include('components.theme-toggle')
     @include('partials.profile-quick-sheet')
     @yield('scripts')
 </body>

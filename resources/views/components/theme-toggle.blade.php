@@ -35,6 +35,21 @@
         letter-spacing: 0.02em;
     }
 
+    .btn-theme-toggle--compact {
+        width: auto;
+        padding: 0.5rem 0.85rem;
+    }
+
+    .btn-theme-toggle--compact .theme-toggle-label {
+        display: none;
+    }
+
+    @media (min-width: 768px) {
+        .btn-theme-toggle--compact .theme-toggle-label {
+            display: inline;
+        }
+    }
+
     .floating-theme-toggle {
         position: fixed;
         bottom: clamp(24px, 5vw, 48px);

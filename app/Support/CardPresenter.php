@@ -52,29 +52,31 @@ class CardPresenter
                 'position' => $subtask->position,
                 'estimated_hours' => $subtask->estimated_hours,
                 'actual_hours' => $subtask->actual_hours,
-                'blockers' => $subtask->blockers->map(function ($blocker) {
-                    return [
-                        'id' => $blocker->blocker_id,
-                        'description' => $blocker->description,
-                        'status' => $blocker->status,
-                        'priority' => $blocker->priority,
-                        'requested_by' => $blocker->user ? [
-                            'id' => $blocker->user->user_id,
-                            'name' => $blocker->user->full_name,
-                        ] : null,
-                        'assigned_to' => $blocker->assignedTo ? [
-                            'id' => $blocker->assignedTo->user_id,
-                            'name' => $blocker->assignedTo->full_name,
-                        ] : null,
-                        'solution' => $blocker->solution,
-                        'resolved_at' => self::formatDate($blocker->resolved_at),
-                        'rejected_at' => self::formatDate($blocker->rejected_at),
-                    ];
-                }),
+                'blockers' => $subtask->blockers
+                    ->map(fn ($blocker) => self::formatBlockerSnapshot($blocker)),
             ];
         });
 
         return $payload;
+    }
+
+    private static function formatBlockerSnapshot($blocker): array
+    {
+        return [
+            'blocker_id' => $blocker->blocker_id,
+            'blocker_user_id' => $blocker->user_id,
+            'blocker_date' => self::formatDate($blocker->created_at),
+            'status' => self::simplifyBlockerStatus($blocker->status),
+        ];
+    }
+
+    private static function simplifyBlockerStatus(?string $status): string
+    {
+        if (in_array($status, ['resolved', 'rejected', 'selesai'], true)) {
+            return 'selesai';
+        }
+
+        return 'pending';
     }
 
     private static function formatDate($value): ?string

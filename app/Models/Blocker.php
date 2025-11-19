@@ -14,18 +14,7 @@ class Blocker extends Model
     protected $fillable = [
         'user_id',
         'subtask_id',
-        'description',
-        'priority',
         'status',
-        'assigned_to',
-        'solution',
-        'resolved_at',
-        'rejected_at'
-    ];
-
-    protected $casts = [
-        'resolved_at' => 'datetime',
-        'rejected_at' => 'datetime'
     ];
 
     /**
@@ -42,14 +31,6 @@ class Blocker extends Model
     public function subtask()
     {
         return $this->belongsTo(Subtask::class, 'subtask_id', 'subtask_id');
-    }
-
-    /**
-     * Relasi ke Team Lead yang ditugaskan
-     */
-    public function assignedTo()
-    {
-        return $this->belongsTo(User::class, 'assigned_to', 'user_id');
     }
 
     /**

@@ -18,8 +18,6 @@ class BlockersTableSeeder extends Seeder
         // Ambil beberapa user developer dan designer
         $developers = User::where('role', 'developer')->take(3)->get();
         $designers = User::where('role', 'designer')->take(2)->get();
-        $teamLeads = User::where('role', 'team_lead')->take(2)->get();
-        
         // Ambil beberapa subtasks beserta card terkait
         $subtasks = Subtask::with('card')->take(8)->get();
         
@@ -34,12 +32,7 @@ class BlockersTableSeeder extends Seeder
                     Blocker::create([
                         'user_id' => $developer->user_id,
                         'subtask_id' => $subtask->subtask_id,
-                        'description' => 'Saya mengalami kendala pada subtask "' . $subtask->subtask_title . '" untuk card ' . $subtask->card->card_title . '. Ada beberapa error yang tidak bisa saya selesaikan sendiri.',
-                        'priority' => ['low', 'medium', 'high', 'urgent'][array_rand(['low', 'medium', 'high', 'urgent'])],
-                        'status' => ['pending', 'in_progress', 'resolved'][array_rand(['pending', 'in_progress', 'resolved'])],
-                        'assigned_to' => $teamLeads->count() > 0 ? $teamLeads->random()->user_id : null,
-                        'solution' => $index % 2 == 0 ? 'Silakan cek dokumentasi API dan pastikan semua dependency sudah terinstall dengan benar.' : null,
-                        'resolved_at' => $index % 2 == 0 ? now() : null,
+                        'status' => $index % 2 === 0 ? 'selesai' : 'pending',
                     ]);
                 }
             }
@@ -57,12 +50,7 @@ class BlockersTableSeeder extends Seeder
                     Blocker::create([
                         'user_id' => $designer->user_id,
                         'subtask_id' => $subtask->subtask_id,
-                        'description' => 'Saya butuh bantuan pada subtask "' . $subtask->subtask_title . '" di card ' . $subtask->card->card_title . '. Ada beberapa aspek yang perlu dikonsultasikan.',
-                        'priority' => ['medium', 'high'][array_rand(['medium', 'high'])],
-                        'status' => ['pending', 'in_progress'][array_rand(['pending', 'in_progress'])],
-                        'assigned_to' => $teamLeads->count() > 0 ? $teamLeads->random()->user_id : null,
-                        'solution' => null,
-                        'resolved_at' => null,
+                        'status' => $index % 2 === 0 ? 'selesai' : 'pending',
                     ]);
                 }
             }
